@@ -6,3 +6,11 @@ from .fermi_gbm_flt_pos import FermiGBMFltPos
 from .fermi_gbm_flt_pos import parse_fermi_gbm_flt_pos
 from .fermi_gbm_gnd_pos import FermiGBMGndPos
 from .fermi_gbm_gnd_pos import parse_fermi_gbm_gnd_pos
+from .fermi_lat_offline import FermiLATOffline
+from .fermi_lat_offline import parse_fermi_lat_offline
+from .fermi_lat_pos_diag import FermiLATPosDiag
+from .fermi_lat_pos_diag import parse_fermi_lat_pos_diag
+from .fermi_lat_pos_ini import FermiLATPosIni
+from .fermi_lat_pos_ini import parse_fermi_lat_pos_ini
+from .fermi_lat_pos_upd import FermiLATPosUpd
+from .fermi_lat_pos_upd import parse_fermi_lat_pos_upd

@@ -75,7 +75,7 @@
         <AstroCoords coord_system_id="UTC-FK5-GEO">
           <Time unit="s">
             <TimeInstant>
-              <ISOTime>2026-01--9130T00:00:00.00</ISOTime>
+              <ISOTime>2026-02-26T10:38:00</ISOTime>
             </TimeInstant>
           </Time>
           <Position2D unit="deg">

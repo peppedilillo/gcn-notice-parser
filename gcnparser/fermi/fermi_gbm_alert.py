@@ -56,7 +56,7 @@ class FermiGBMAlert(BaseModel):
         temporal_prox_match: Whether temporal coincidence was found with another event.
         crc_error: Whether a CRC error was detected.
         reference_uri: URL to the Fermi GBM instrument documentation.
-        followup: IVORN of the parent notice that this notice updates (if any).
+        followup: IVORN of the parent notice that this notice updates (unlikely any).
     """
 
     author_contact_name: str
