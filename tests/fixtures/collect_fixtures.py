@@ -13,7 +13,6 @@ TOPICS = {
         "gcn.classic.voevent.FERMI_GBM_FIN_POS",
         "gcn.classic.voevent.FERMI_GBM_FLT_POS",
         "gcn.classic.voevent.FERMI_GBM_GND_POS",
-        "gcn.classic.voevent.FERMI_GBM_SUBTHRESH",
         "gcn.classic.voevent.FERMI_LAT_POS_INI",
         "gcn.classic.voevent.FERMI_LAT_POS_UPD",
         "gcn.classic.voevent.FERMI_LAT_POS_DIAG",
@@ -59,6 +58,9 @@ TOPICS = {
         "gcn.notices.svom.voevent.eclairs",
         "gcn.notices.svom.voevent.mxt",
     ],
+    "ep": [
+        "gcn.notices.einstein_probe.wxt.alert",
+    ],
     "lvc": [
         "gcn.classic.voevent.LVC_COUNTERPART",
         "gcn.classic.voevent.LVC_EARLY_WARNING",
@@ -68,6 +70,14 @@ TOPICS = {
         "gcn.classic.voevent.LVC_TEST",
         "gcn.classic.voevent.LVC_UPDATE",
     ],
+}
+
+SUFFIX = {
+    "fermi": ".xml",
+    "swift": ".xml",
+    "svom": ".xml",
+    "ep": ".json",
+    "lvc": ".xml",
 }
 
 FIXTURES_ROOT = Path(__file__).resolve().parent
@@ -98,7 +108,7 @@ def all_saturated(collected: dict, quota: int) -> bool:
 def save_fixture(instrument: str, channel: str, offset: int, content: bytes) -> Path:
     dest = FIXTURES_ROOT / instrument / channel
     dest.mkdir(parents=True, exist_ok=True)
-    path = dest / f"{channel}_{offset}.xml"
+    path = dest / f"{channel}_{offset}{SUFFIX[instrument]}"
     path.write_bytes(content)
     return path
 
