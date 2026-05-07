@@ -1,0 +1,19 @@
+[project]
+name = "gcn-parsers"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.3.3",
+    "pydantic>=2.13.4",
+]
+
+[dependency-groups]
+dev = [
+    "black>=26.3.1",
+    "gcn-kafka>=0.3.4",
+    "isort>=8.0.1",
+    "pre-commit>=4.6.0",
+    "pytest>=9.0.3",
+]
