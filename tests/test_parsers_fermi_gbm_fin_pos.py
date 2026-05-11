@@ -51,6 +51,7 @@ def _fin_pos(**overrides) -> FermiGBMFinPos:
         (
             "fermi_gbm_fin_pos/fermi_gbm_fin_pos_981.xml",
             _fin_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Fin_Pos2026-02-04T16:50:06.96_791916611_0-084",
                 alert_datetime=datetime(2026, 2, 4, 16, 59, 16),
                 pkt_ser_num=14,
                 trig_id=791916611,
@@ -70,6 +71,7 @@ def _fin_pos(**overrides) -> FermiGBMFinPos:
         (
             "fermi_gbm_fin_pos/fermi_gbm_fin_pos_1027.xml",
             _fin_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Fin_Pos2026-04-02T22:57:17.54_796863442_0-545",
                 alert_datetime=datetime(2026, 4, 2, 23, 6, 36),
                 pkt_ser_num=17,
                 trig_id=796863442,
@@ -89,6 +91,7 @@ def _fin_pos(**overrides) -> FermiGBMFinPos:
         (
             "fermi_gbm_fin_pos/fermi_gbm_fin_pos_1039.xml",
             _fin_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Fin_Pos2026-04-15T04:43:59.31_797921044_0-825",
                 alert_datetime=datetime(2026, 4, 15, 4, 53, 27),
                 pkt_ser_num=10,
                 trig_id=797921044,

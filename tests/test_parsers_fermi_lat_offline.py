@@ -42,6 +42,7 @@ def _lat_offline(**overrides) -> FermiLATOffline:
         (
             "fermi_lat_offline/fermi_lat_offline_29.xml",
             _lat_offline(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#LAT_Offline_Pos_2026-02-26T10:38:18.84_793795080-0-190",
                 alert_datetime=datetime(2026, 2, 26, 15, 42, 21),
                 pkt_ser_num=3,
                 trig_id=793795080,

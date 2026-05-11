@@ -1,15 +1,15 @@
 from datetime import datetime
 from typing import Annotated
-from xml.etree import ElementTree as ET
 
 from pydantic import BaseModel
 
-from gcnparser.utils import attr as _attr
-from gcnparser.utils import group_flag as _group_flag
-from gcnparser.utils import group_param as _group_param
-from gcnparser.utils import opt_text as _opt_text
-from gcnparser.utils import param as _param
-from gcnparser.utils import text as _text
+from gcnparser.parse_xml import attr
+from gcnparser.parse_xml import group_flag
+from gcnparser.parse_xml import opt_text
+from gcnparser.parse_xml import param
+from gcnparser.parse_xml import parse_notice
+from gcnparser.parse_xml import root_attr
+from gcnparser.parse_xml import text
 
 
 class FermiGBMAlert(BaseModel):
@@ -19,6 +19,7 @@ class FermiGBMAlert(BaseModel):
         author_contact_name: Contact name of the notice author.
         author_email: Email address of the notice author.
         alert_datetime: UTC datetime when the notice was issued (ISO-8601).
+        ivorn: Raw VOEvent IVORN identifying this notice instance.
         packet_type: GCN packet type number (110 = GBM Alert, 116 = GBM Alert Internal).
         pkt_ser_num: Serial number for this packet type.
         trig_id: Unique trigger identifier; seconds since 2001-01-01.
@@ -62,6 +63,7 @@ class FermiGBMAlert(BaseModel):
     author_contact_name: str
     author_email: str
     alert_datetime: Annotated[datetime, "ISO8601"]
+    ivorn: str
     packet_type: int
     pkt_ser_num: int
     trig_id: int
@@ -102,10 +104,14 @@ class FermiGBMAlert(BaseModel):
     followup: str | None = None
 
 
+_ROOT_RULES = {
+    "ivorn": lambda r: root_attr(r, "ivorn"),
+}
+
 _WHO_RULES = {
-    "author_contact_name": lambda r: _text(r, "Who/Author/contactName"),
-    "author_email": lambda r: _text(r, "Who/Author/contactEmail"),
-    "alert_datetime": lambda r: datetime.fromisoformat(_text(r, "Who/Date")),
+    "author_contact_name": lambda r: text(r, "Who/Author/contactName"),
+    "author_email": lambda r: text(r, "Who/Author/contactEmail"),
+    "alert_datetime": lambda r: datetime.fromisoformat(text(r, "Who/Date")),
 }
 
 
@@ -127,99 +133,87 @@ def _parse_dets(value: str) -> tuple[str, ...]:
 
 
 _WHAT_RULES = {
-    "packet_type": lambda r: int(_param(r, "Packet_Type")),
-    "pkt_ser_num": lambda r: int(_param(r, "Pkt_Ser_Num")),
-    "trig_id": lambda r: int(_param(r, "TrigID")),
-    "sequence_num": lambda r: int(_param(r, "Sequence_Num")),
-    "burst_tjd": lambda r: int(_param(r, "Burst_TJD")),
-    "burst_sod": lambda r: float(_param(r, "Burst_SOD")),
-    "trig_signif": lambda r: float(_param(r, "Trig_Signif")),
-    "trig_dur": lambda r: float(_param(r, "Trig_Dur")),
-    "lo_chan_index": lambda r: int(_param(r, "Lo_Chan_Index")),
-    "hi_chan_index": lambda r: int(_param(r, "Hi_Chan_Index")),
-    "lo_chan_energy": lambda r: int(_param(r, "Lo_Chan_Energy")),
-    "hi_chan_energy": lambda r: None if _param(r, "Hi_Chan_Energy") == "infinity" else int(_param(r, "Hi_Chan_Energy")),
-    "adc_lo_chan": lambda r: int(_param(r, "ADC_Lo_Chan")),
-    "adc_hi_chan": lambda r: int(_param(r, "ADC_Hi_Chan")),
-    "algorithm": lambda r: int(_param(r, "Algorithm")),
-    "dets": lambda r: _parse_dets(_param(r, "Dets")),
-    "sc_long": lambda r: float(_param(r, "SC_Long")),
-    "sc_lat": lambda r: float(_param(r, "SC_Lat")),
-    "lightcurve_url": lambda r: _param(r, "LightCurve_URL"),
-    "coords_type": lambda r: int(_param(r, "Coords_Type")),
-    "coords_string": lambda r: _param(r, "Coords_String"),
-    "values_out_of_range": lambda r: _group_flag(r, "Misc_Flags", "Values_Out_of_Range"),
-    "near_bright_star": lambda r: _group_flag(r, "Misc_Flags", "Near_Bright_Star"),
-    "err_circle_in_galaxy": lambda r: _group_flag(r, "Misc_Flags", "Err_Circle_in_Galaxy"),
-    "galaxy_in_err_circle": lambda r: _group_flag(r, "Misc_Flags", "Galaxy_in_Err_Circle"),
-    "too_generated": lambda r: _group_flag(r, "Misc_Flags", "TOO_Generated"),
-    "trig_time_is_sec_hdr_time": lambda r: _group_flag(r, "Misc_Flags", "Trig_time_is_SecHdrTime"),
-    "delayed_transmission": lambda r: _group_flag(r, "Misc_Flags", "Delayed_Transmission"),
-    "updated_notice": lambda r: _group_flag(r, "Misc_Flags", "Updated_Notice"),
-    "flt_generated": lambda r: _group_flag(r, "Misc_Flags", "Flt_Generated"),
-    "gnd_generated": lambda r: _group_flag(r, "Misc_Flags", "Gnd_Generated"),
-    "temporal_prox_match": lambda r: _group_flag(r, "Misc_Flags", "Temporal_Prox_Match"),
-    "crc_error": lambda r: _group_flag(r, "Misc_Flags", "CRC_Error"),
+    "packet_type": lambda r: int(param(r, "Packet_Type")),
+    "pkt_ser_num": lambda r: int(param(r, "Pkt_Ser_Num")),
+    "trig_id": lambda r: int(param(r, "TrigID")),
+    "sequence_num": lambda r: int(param(r, "Sequence_Num")),
+    "burst_tjd": lambda r: int(param(r, "Burst_TJD")),
+    "burst_sod": lambda r: float(param(r, "Burst_SOD")),
+    "trig_signif": lambda r: float(param(r, "Trig_Signif")),
+    "trig_dur": lambda r: float(param(r, "Trig_Dur")),
+    "lo_chan_index": lambda r: int(param(r, "Lo_Chan_Index")),
+    "hi_chan_index": lambda r: int(param(r, "Hi_Chan_Index")),
+    "lo_chan_energy": lambda r: int(param(r, "Lo_Chan_Energy")),
+    "hi_chan_energy": lambda r: None if param(r, "Hi_Chan_Energy") == "infinity" else int(param(r, "Hi_Chan_Energy")),
+    "adc_lo_chan": lambda r: int(param(r, "ADC_Lo_Chan")),
+    "adc_hi_chan": lambda r: int(param(r, "ADC_Hi_Chan")),
+    "algorithm": lambda r: int(param(r, "Algorithm")),
+    "dets": lambda r: _parse_dets(param(r, "Dets")),
+    "sc_long": lambda r: float(param(r, "SC_Long")),
+    "sc_lat": lambda r: float(param(r, "SC_Lat")),
+    "lightcurve_url": lambda r: param(r, "LightCurve_URL"),
+    "coords_type": lambda r: int(param(r, "Coords_Type")),
+    "coords_string": lambda r: param(r, "Coords_String"),
+    "values_out_of_range": lambda r: group_flag(r, "Misc_Flags", "Values_Out_of_Range"),
+    "near_bright_star": lambda r: group_flag(r, "Misc_Flags", "Near_Bright_Star"),
+    "err_circle_in_galaxy": lambda r: group_flag(r, "Misc_Flags", "Err_Circle_in_Galaxy"),
+    "galaxy_in_err_circle": lambda r: group_flag(r, "Misc_Flags", "Galaxy_in_Err_Circle"),
+    "too_generated": lambda r: group_flag(r, "Misc_Flags", "TOO_Generated"),
+    "trig_time_is_sec_hdr_time": lambda r: group_flag(r, "Misc_Flags", "Trig_time_is_SecHdrTime"),
+    "delayed_transmission": lambda r: group_flag(r, "Misc_Flags", "Delayed_Transmission"),
+    "updated_notice": lambda r: group_flag(r, "Misc_Flags", "Updated_Notice"),
+    "flt_generated": lambda r: group_flag(r, "Misc_Flags", "Flt_Generated"),
+    "gnd_generated": lambda r: group_flag(r, "Misc_Flags", "Gnd_Generated"),
+    "temporal_prox_match": lambda r: group_flag(r, "Misc_Flags", "Temporal_Prox_Match"),
+    "crc_error": lambda r: group_flag(r, "Misc_Flags", "CRC_Error"),
 }
 
 _WHEREWHEN_RULES = {
     "burst_datetime": lambda r: datetime.fromisoformat(
-        _text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Time/TimeInstant/ISOTime")
+        text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Time/TimeInstant/ISOTime")
     ),
 }
 
 _HOW_RULES = {
-    "reference_uri": lambda r: _attr(r, "How/Reference", "uri"),
+    "reference_uri": lambda r: attr(r, "How/Reference", "uri"),
 }
 
 _WHY_RULES = {
-    "importance": lambda r: float(_attr(r, "Why", "importance")),
-    "inference_probability": lambda r: float(_attr(r, "Why/Inference", "probability")),
+    "importance": lambda r: float(attr(r, "Why", "importance")),
+    "inference_probability": lambda r: float(attr(r, "Why/Inference", "probability")),
 }
 
 _CITATIONS_RULES = {
-    "followup": lambda r: _opt_text(r, "Citations/EventIVORN[@cite='followup']"),
+    "followup": lambda r: opt_text(r, "Citations/EventIVORN[@cite='followup']"),
 }
 
 
-def _parse_who(root: ET.Element) -> dict:
-    """Helper parser for VOEvent `Who` block."""
-    return {k: v(root) for k, v in _WHO_RULES.items()}
-
-
-def _parse_what(root: ET.Element) -> dict:
-    """Helper parser for VOEvent `What` block."""
-    return {k: v(root) for k, v in _WHAT_RULES.items()}
-
-
-def _parse_where_when(root: ET.Element) -> dict:
-    """Helper parser for VOEvent `WhereWhen` block."""
-    return {k: v(root) for k, v in _WHEREWHEN_RULES.items()}
-
-
-def _parse_how(root: ET.Element) -> dict:
-    """Helper parser for VOEvent `How` block."""
-    return {k: v(root) for k, v in _HOW_RULES.items()}
-
-
-def _parse_why(root: ET.Element) -> dict:
-    """Helper parser for VOEvent `Why` block."""
-    return {k: v(root) for k, v in _WHY_RULES.items()}
-
-
-def _parse_citations(root: ET.Element) -> dict:
-    """Helper parser for VOEvent `Citations` block."""
-    return {k: v(root) for k, v in _CITATIONS_RULES.items()}
-
-
 def parse_fermi_gbm_alert(value: bytes) -> FermiGBMAlert:
-    """Parses a Fermi GBM alert from bytes."""
-    root = ET.fromstring(value)
-    data = {}
-    data.update(_parse_who(root))
-    data.update(_parse_what(root))
-    data.update(_parse_where_when(root))
-    data.update(_parse_how(root))
-    data.update(_parse_why(root))
-    data.update(_parse_citations(root))
-    return FermiGBMAlert(**data)
+    """Parses a Fermi GBM alert from bytes.
+
+    Args:
+        value: Raw XML bytes of the VOEvent notice.
+
+    Returns:
+        Parsed GBM alert notice model.
+
+    Raises:
+        ParseError: If the XML document cannot be parsed or model validation
+            fails.
+        FieldParseError: If a specific field cannot be extracted from the
+            notice.
+    """
+    return parse_notice(
+        value,
+        FermiGBMAlert,
+        "parse_fermi_gbm_alert",
+        {
+            "VOEvent": _ROOT_RULES,
+            "Who": _WHO_RULES,
+            "What": _WHAT_RULES,
+            "WhereWhen": _WHEREWHEN_RULES,
+            "How": _HOW_RULES,
+            "Why": _WHY_RULES,
+            "Citations": _CITATIONS_RULES,
+        },
+    )

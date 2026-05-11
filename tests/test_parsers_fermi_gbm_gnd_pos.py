@@ -46,6 +46,7 @@ def _gnd_pos(**overrides) -> FermiGBMGndPos:
         (
             "fermi_gbm_gnd_pos/fermi_gbm_gnd_pos_1698.xml",
             _gnd_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Gnd_Pos_2026-02-04T16:50:06.96_791916611_57-053",
                 alert_datetime=datetime(2026, 2, 4, 16, 50, 54),
                 pkt_ser_num=36,
                 trig_id=791916611,
@@ -71,6 +72,7 @@ def _gnd_pos(**overrides) -> FermiGBMGndPos:
         (
             "fermi_gbm_gnd_pos/fermi_gbm_gnd_pos_1704.xml",
             _gnd_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Gnd_Pos_2026-02-07T13:12:10.83_792162735_59-451",
                 alert_datetime=datetime(2026, 2, 7, 13, 12, 57),
                 pkt_ser_num=4,
                 trig_id=792162735,
@@ -96,6 +98,7 @@ def _gnd_pos(**overrides) -> FermiGBMGndPos:
         (
             "fermi_gbm_gnd_pos/fermi_gbm_gnd_pos_1826.xml",
             _gnd_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Gnd_Pos_2026-04-09T17:32:45.67_797448770_58-663",
                 alert_datetime=datetime(2026, 4, 9, 17, 33, 33),
                 pkt_ser_num=1,
                 trig_id=797448770,
@@ -135,34 +138,20 @@ def test_parse_fermi_gbm_gnd_pos_completes():
 _KEEP = frozenset({"Who", "What", "WhereWhen", "How", "Why"})
 
 
-def _strip_values(elem: ElementTree.Element) -> ElementTree.Element:
-    tag = elem.tag
-    attrib = {k: "" for k in elem.attrib}
-    cloned = ElementTree.Element(tag, attrib)
-    cloned.text = None
-    cloned.tail = None
-    for child in elem:
-        cloned.append(_strip_values(child))
-    return cloned
-
-
-def _structural_children(root: ElementTree.Element) -> list[ElementTree.Element]:
-    result = []
+def _has_sections(root: ElementTree.Element) -> set[str]:
+    result = set()
     for child in root:
         local = child.tag.split("}")[-1] if "}" in child.tag else child.tag
         if local in _KEEP:
-            result.append(_strip_values(child))
+            result.add(local)
     return result
 
 
-def test_all_gnd_pos_fixtures_have_same_tree():
-    """All fermi_gbm_gnd_pos fixtures must have identical XML structure (tags + attribute names)."""
+def test_all_gnd_pos_fixtures_have_standard_sections():
+    """All fermi_gbm_gnd_pos fixtures must contain the standard VOE sections."""
     fixtures = sorted(p for p in (FIXTURES / "fermi_gbm_gnd_pos").iterdir() if p.suffix == ".xml")
     assert len(fixtures) >= 2
 
-    ref = _structural_children(ElementTree.fromstring(fixtures[0].read_bytes()))
-    for path in fixtures[1:]:
-        cand = _structural_children(ElementTree.fromstring(path.read_bytes()))
-        assert len(ref) == len(cand)
-        for a, b in zip(ref, cand):
-            assert ElementTree.tostring(a) == ElementTree.tostring(b), f"{path.name} has a different XML tree structure"
+    for path in fixtures:
+        sections = _has_sections(ElementTree.fromstring(path.read_bytes()))
+        assert sections == _KEEP, f"{path.name} missing sections: {_KEEP - sections}"

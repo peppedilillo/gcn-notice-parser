@@ -1,2 +1,4 @@
+"""Typed alias for Fermi LAT final/diagnostic-position notices."""
+
 from ._fermi_lat_pos import FermiLATPos as FermiLATPosDiag
 from ._fermi_lat_pos import parse_fermi_lat_pos as parse_fermi_lat_pos_diag

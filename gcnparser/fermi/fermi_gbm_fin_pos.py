@@ -1,15 +1,16 @@
 from datetime import datetime
 from typing import Annotated
-from xml.etree import ElementTree as ET
 
 from pydantic import BaseModel
 
-from gcnparser.utils import attr as _attr
-from gcnparser.utils import group_flag as _group_flag
-from gcnparser.utils import group_param as _group_param
-from gcnparser.utils import opt_text as _opt_text
-from gcnparser.utils import param as _param
-from gcnparser.utils import text as _text
+from gcnparser.parse_xml import attr
+from gcnparser.parse_xml import group_flag
+from gcnparser.parse_xml import group_param
+from gcnparser.parse_xml import opt_text
+from gcnparser.parse_xml import param
+from gcnparser.parse_xml import parse_notice
+from gcnparser.parse_xml import root_attr
+from gcnparser.parse_xml import text
 
 
 class FermiGBMFinPos(BaseModel):
@@ -19,6 +20,7 @@ class FermiGBMFinPos(BaseModel):
         author_contact_name: Contact name of the notice author.
         author_email: Email address of the notice author.
         alert_datetime: UTC datetime when the notice was issued (ISO-8601).
+        ivorn: Raw VOEvent IVORN identifying this notice instance.
         packet_type: GCN packet type number (115 = Fin Pos, 146 = Fin Pos Internal).
         pkt_ser_num: Serial number for this packet type.
         trig_id: Unique trigger identifier; seconds since 2001-01-01.
@@ -62,6 +64,7 @@ class FermiGBMFinPos(BaseModel):
     author_contact_name: str
     author_email: str
     alert_datetime: Annotated[datetime, "ISO8601"]
+    ivorn: str
     packet_type: int
     pkt_ser_num: int
     trig_id: int
@@ -102,102 +105,100 @@ class FermiGBMFinPos(BaseModel):
     inference_probability: float
 
 
+_ROOT_RULES = {
+    "ivorn": lambda r: root_attr(r, "ivorn"),
+}
+
 _WHO_RULES = {
-    "author_contact_name": lambda r: _text(r, "Who/Author/contactName"),
-    "author_email": lambda r: _text(r, "Who/Author/contactEmail"),
-    "alert_datetime": lambda r: datetime.fromisoformat(_text(r, "Who/Date")),
+    "author_contact_name": lambda r: text(r, "Who/Author/contactName"),
+    "author_email": lambda r: text(r, "Who/Author/contactEmail"),
+    "alert_datetime": lambda r: datetime.fromisoformat(text(r, "Who/Date")),
 }
 
 _WHAT_RULES = {
-    "packet_type": lambda r: int(_param(r, "Packet_Type")),
-    "pkt_ser_num": lambda r: int(_param(r, "Pkt_Ser_Num")),
-    "trig_id": lambda r: int(_param(r, "TrigID")),
-    "sequence_num": lambda r: int(_param(r, "Sequence_Num")),
-    "burst_tjd": lambda r: int(_param(r, "Burst_TJD")),
-    "burst_sod": lambda r: float(_param(r, "Burst_SOD")),
-    "burst_inten": lambda r: int(_param(r, "Burst_Inten")),
-    "data_integ": lambda r: float(_param(r, "Data_Integ")),
-    "burst_signif": lambda r: float(_param(r, "Burst_Signif")),
-    "phi": lambda r: float(_param(r, "Phi")),
-    "theta": lambda r: float(_param(r, "Theta")),
-    "algorithm": lambda r: int(_param(r, "Algorithm")),
-    "lo_energy": lambda r: int(_param(r, "Lo_Energy")),
-    "hi_energy": lambda r: int(_param(r, "Hi_Energy")),
-    "lightcurve_url": lambda r: _param(r, "LightCurve_URL"),
-    "locationmap_url": lambda r: _param(r, "LocationMap_URL"),
-    "coords_type": lambda r: int(_param(r, "Coords_Type")),
-    "coords_string": lambda r: _param(r, "Coords_String"),
-    "def_not_a_grb": lambda r: _group_flag(r, "Trigger_ID", "Def_NOT_a_GRB"),
-    "target_in_blk_catalog": lambda r: _group_flag(r, "Trigger_ID", "Target_in_Blk_Catalog"),
-    "human_generated": lambda r: _group_flag(r, "Trigger_ID", "Human_generated"),
-    "robo_generated": lambda r: _group_flag(r, "Trigger_ID", "Robo_generated"),
-    "long_short": lambda r: _group_param(r, "Trigger_ID", "Long_short") or "unknown",
-    "spatial_prox_match": lambda r: _group_flag(r, "Trigger_ID", "Spatial_Prox_Match"),
-    "temporal_prox_match": lambda r: _group_flag(r, "Trigger_ID", "Temporal_Prox_Match"),
-    "test_submission": lambda r: _group_flag(r, "Trigger_ID", "Test_Submission"),
-    "values_out_of_range": lambda r: _group_flag(r, "Misc_Flags", "Values_Out_of_Range"),
-    "flt_generated": lambda r: _group_flag(r, "Misc_Flags", "Flt_Generated"),
-    "gnd_generated": lambda r: _group_flag(r, "Misc_Flags", "Gnd_Generated"),
-    "crc_error": lambda r: _group_flag(r, "Misc_Flags", "CRC_Error"),
+    "packet_type": lambda r: int(param(r, "Packet_Type")),
+    "pkt_ser_num": lambda r: int(param(r, "Pkt_Ser_Num")),
+    "trig_id": lambda r: int(param(r, "TrigID")),
+    "sequence_num": lambda r: int(param(r, "Sequence_Num")),
+    "burst_tjd": lambda r: int(param(r, "Burst_TJD")),
+    "burst_sod": lambda r: float(param(r, "Burst_SOD")),
+    "burst_inten": lambda r: int(param(r, "Burst_Inten")),
+    "data_integ": lambda r: float(param(r, "Data_Integ")),
+    "burst_signif": lambda r: float(param(r, "Burst_Signif")),
+    "phi": lambda r: float(param(r, "Phi")),
+    "theta": lambda r: float(param(r, "Theta")),
+    "algorithm": lambda r: int(param(r, "Algorithm")),
+    "lo_energy": lambda r: int(param(r, "Lo_Energy")),
+    "hi_energy": lambda r: int(param(r, "Hi_Energy")),
+    "lightcurve_url": lambda r: param(r, "LightCurve_URL"),
+    "locationmap_url": lambda r: param(r, "LocationMap_URL"),
+    "coords_type": lambda r: int(param(r, "Coords_Type")),
+    "coords_string": lambda r: param(r, "Coords_String"),
+    "def_not_a_grb": lambda r: group_flag(r, "Trigger_ID", "Def_NOT_a_GRB"),
+    "target_in_blk_catalog": lambda r: group_flag(r, "Trigger_ID", "Target_in_Blk_Catalog"),
+    "human_generated": lambda r: group_flag(r, "Trigger_ID", "Human_generated"),
+    "robo_generated": lambda r: group_flag(r, "Trigger_ID", "Robo_generated"),
+    "long_short": lambda r: group_param(r, "Trigger_ID", "Long_short") or "unknown",
+    "spatial_prox_match": lambda r: group_flag(r, "Trigger_ID", "Spatial_Prox_Match"),
+    "temporal_prox_match": lambda r: group_flag(r, "Trigger_ID", "Temporal_Prox_Match"),
+    "test_submission": lambda r: group_flag(r, "Trigger_ID", "Test_Submission"),
+    "values_out_of_range": lambda r: group_flag(r, "Misc_Flags", "Values_Out_of_Range"),
+    "flt_generated": lambda r: group_flag(r, "Misc_Flags", "Flt_Generated"),
+    "gnd_generated": lambda r: group_flag(r, "Misc_Flags", "Gnd_Generated"),
+    "crc_error": lambda r: group_flag(r, "Misc_Flags", "CRC_Error"),
 }
 
 _WHEREWHEN_RULES = {
     "burst_datetime": lambda r: datetime.fromisoformat(
-        _text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Time/TimeInstant/ISOTime")
+        text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Time/TimeInstant/ISOTime")
     ),
-    "ra": lambda r: float(_text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Position2D/Value2/C1")),
-    "dec": lambda r: float(_text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Position2D/Value2/C2")),
+    "ra": lambda r: float(text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Position2D/Value2/C1")),
+    "dec": lambda r: float(text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Position2D/Value2/C2")),
     "error_radius": lambda r: float(
-        _text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Position2D/Error2Radius")
+        text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Position2D/Error2Radius")
     ),
 }
 
 _HOW_RULES = {
-    "reference_uri": lambda r: _attr(r, "How/Reference", "uri"),
+    "reference_uri": lambda r: attr(r, "How/Reference", "uri"),
 }
 
 _WHY_RULES = {
-    "importance": lambda r: float(_attr(r, "Why", "importance")),
-    "inference_probability": lambda r: float(_attr(r, "Why/Inference", "probability")),
+    "importance": lambda r: float(attr(r, "Why", "importance")),
+    "inference_probability": lambda r: float(attr(r, "Why/Inference", "probability")),
 }
 
 _CITATIONS_RULES = {
-    "followup": lambda r: _opt_text(r, "Citations/EventIVORN[@cite='followup']"),
+    "followup": lambda r: opt_text(r, "Citations/EventIVORN[@cite='followup']"),
 }
 
 
-def _parse_who(root: ET.Element) -> dict:
-    return {k: v(root) for k, v in _WHO_RULES.items()}
-
-
-def _parse_what(root: ET.Element) -> dict:
-    return {k: v(root) for k, v in _WHAT_RULES.items()}
-
-
-def _parse_where_when(root: ET.Element) -> dict:
-    return {k: v(root) for k, v in _WHEREWHEN_RULES.items()}
-
-
-def _parse_how(root: ET.Element) -> dict:
-    return {k: v(root) for k, v in _HOW_RULES.items()}
-
-
-def _parse_why(root: ET.Element) -> dict:
-    return {k: v(root) for k, v in _WHY_RULES.items()}
-
-
-def _parse_citations(root: ET.Element) -> dict:
-    return {k: v(root) for k, v in _CITATIONS_RULES.items()}
-
-
 def parse_fermi_gbm_fin_pos(value: bytes) -> FermiGBMFinPos:
-    """Parses a Fermi GBM final position notice."""
-    root = ET.fromstring(value)
-    data = {}
-    data.update(_parse_who(root))
-    data.update(_parse_what(root))
-    data.update(_parse_where_when(root))
-    data.update(_parse_how(root))
-    data.update(_parse_why(root))
-    data.update(_parse_citations(root))
-    return FermiGBMFinPos(**data)
+    """Parses a Fermi GBM final position notice.
+
+    Args:
+        value: Raw XML bytes of the VOEvent notice.
+
+    Returns:
+        Parsed GBM final position notice model.
+
+    Raises:
+        ParseError: If the XML document cannot be parsed or model validation
+            fails.
+        FieldParseError: If a specific field cannot be extracted from the
+            notice.
+    """
+    return parse_notice(
+        value,
+        FermiGBMFinPos,
+        "parse_fermi_gbm_fin_pos",
+        {
+            "VOEvent": _ROOT_RULES,
+            "Who": _WHO_RULES,
+            "What": _WHAT_RULES,
+            "WhereWhen": _WHEREWHEN_RULES,
+            "How": _HOW_RULES,
+            "Why": _WHY_RULES,
+            "Citations": _CITATIONS_RULES,
+        },
+    )

@@ -50,6 +50,7 @@ _FOLLOWUP = "ivo://nasa.gsfc.gcn/Fermi#LAT_Initial_Pos_2026-01--9130T00:00:00.00
         (
             "fermi_lat_pos_upd/fermi_lat_pos_upd_0.xml",
             _lat_pos_upd(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#LAT_Updated_Pos_2026-01--9130T00:00:00.00_793795104_0-094",
                 alert_datetime=datetime(2026, 2, 26, 10, 39, 21),
                 pkt_ser_num=1,
                 trig_id=793795104,
@@ -69,6 +70,7 @@ _FOLLOWUP = "ivo://nasa.gsfc.gcn/Fermi#LAT_Initial_Pos_2026-01--9130T00:00:00.00
         (
             "fermi_lat_pos_upd/fermi_lat_pos_upd_1.xml",
             _lat_pos_upd(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#LAT_Updated_Pos_2026-01--9130T00:00:00.00_793795104_0-095",
                 alert_datetime=datetime(2026, 2, 26, 10, 39, 41),
                 pkt_ser_num=2,
                 trig_id=793795104,
@@ -88,6 +90,7 @@ _FOLLOWUP = "ivo://nasa.gsfc.gcn/Fermi#LAT_Initial_Pos_2026-01--9130T00:00:00.00
         (
             "fermi_lat_pos_upd/fermi_lat_pos_upd_2.xml",
             _lat_pos_upd(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#LAT_Updated_Pos_2026-01--9130T00:00:00.00_793795104_0-096",
                 alert_datetime=datetime(2026, 2, 26, 10, 40, 2),
                 pkt_ser_num=3,
                 trig_id=793795104,

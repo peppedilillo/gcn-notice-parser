@@ -1,3 +1,5 @@
+"""Public Fermi parser models and entrypoints."""
+
 from .fermi_gbm_alert import FermiGBMAlert
 from .fermi_gbm_alert import parse_fermi_gbm_alert
 from .fermi_gbm_fin_pos import FermiGBMFinPos

@@ -48,6 +48,7 @@ _FOLLOWUP = "ivo://nasa.gsfc.gcn/Fermi#LAT_Initial_Pos_2026-01--9130T00:00:00.00
         (
             "fermi_lat_pos_diag/fermi_lat_pos_diag_0.xml",
             _lat_pos_diag(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#LAT_Final_Pos_2026-01--9130T00:00:00.00_793795104_0-134",
                 alert_datetime=datetime(2026, 2, 26, 10, 48, 44),
                 pkt_ser_num=1,
                 trig_id=793795104,

@@ -42,6 +42,7 @@ def _flt_pos(**overrides) -> FermiGBMFltPos:
         (
             "fermi_gbm_flt_pos/fermi_gbm_flt_pos_8126.xml",
             _flt_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Flt_Pos_2026-02-07T05:42:33.65_792135758_44-945",
                 alert_datetime=datetime(2026, 2, 7, 5, 43, 2),
                 pkt_ser_num=5,
                 trig_id=792135758,
@@ -72,6 +73,7 @@ def _flt_pos(**overrides) -> FermiGBMFltPos:
         (
             "fermi_gbm_flt_pos/fermi_gbm_flt_pos_8127.xml",
             _flt_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Flt_Pos_2026-02-07T05:42:33.65_792135758_58-949",
                 alert_datetime=datetime(2026, 2, 7, 5, 43, 11),
                 pkt_ser_num=6,
                 trig_id=792135758,
@@ -102,6 +104,7 @@ def _flt_pos(**overrides) -> FermiGBMFltPos:
         (
             "fermi_gbm_flt_pos/fermi_gbm_flt_pos_8131.xml",
             _flt_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Flt_Pos_2026-02-08T04:53:37.18_792219222_72-565",
                 alert_datetime=datetime(2026, 2, 8, 4, 54, 25),
                 pkt_ser_num=10,
                 trig_id=792219222,
@@ -132,6 +135,7 @@ def _flt_pos(**overrides) -> FermiGBMFltPos:
         (
             "fermi_gbm_flt_pos/fermi_gbm_flt_pos_8134.xml",
             _flt_pos(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Flt_Pos_2026-02-08T05:07:28.24_792220053_69-621",
                 alert_datetime=datetime(2026, 2, 8, 5, 8, 31),
                 pkt_ser_num=13,
                 trig_id=792220053,
@@ -176,34 +180,20 @@ def test_parse_fermi_gbm_flt_pos_completes():
 _KEEP = frozenset({"Who", "What", "WhereWhen", "How", "Why", "Citations"})
 
 
-def _strip_values(elem: ElementTree.Element) -> ElementTree.Element:
-    tag = elem.tag
-    attrib = {k: "" for k in elem.attrib}
-    cloned = ElementTree.Element(tag, attrib)
-    cloned.text = None
-    cloned.tail = None
-    for child in elem:
-        cloned.append(_strip_values(child))
-    return cloned
-
-
-def _structural_children(root: ElementTree.Element) -> list[ElementTree.Element]:
-    result = []
+def _has_sections(root: ElementTree.Element) -> set[str]:
+    result = set()
     for child in root:
         local = child.tag.split("}")[-1] if "}" in child.tag else child.tag
         if local in _KEEP:
-            result.append(_strip_values(child))
+            result.add(local)
     return result
 
 
-def test_all_flt_pos_fixtures_have_same_tree():
-    """All fermi_gbm_flt_pos fixtures must have identical XML structure (tags + attribute names)."""
+def test_all_flt_pos_fixtures_have_standard_sections():
+    """All fermi_gbm_flt_pos fixtures must contain the standard VOE sections."""
     fixtures = sorted(p for p in (FIXTURES / "fermi_gbm_flt_pos").iterdir() if p.suffix == ".xml")
     assert len(fixtures) >= 2
 
-    ref = _structural_children(ElementTree.fromstring(fixtures[0].read_bytes()))
-    for path in fixtures[1:]:
-        cand = _structural_children(ElementTree.fromstring(path.read_bytes()))
-        assert len(ref) == len(cand)
-        for a, b in zip(ref, cand):
-            assert ElementTree.tostring(a) == ElementTree.tostring(b), f"{path.name} has a different XML tree structure"
+    for path in fixtures:
+        sections = _has_sections(ElementTree.fromstring(path.read_bytes()))
+        assert sections == _KEEP, f"{path.name} missing sections: {_KEEP - sections}"

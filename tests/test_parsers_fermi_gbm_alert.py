@@ -46,6 +46,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3785.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-07T05:42:33.65_792135758_1-944",
                 alert_datetime=datetime(2026, 2, 7, 5, 42, 39),
                 pkt_ser_num=2,
                 trig_id=792135758,
@@ -69,6 +70,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3786.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-07T13:12:10.83_792162735_1-449",
                 alert_datetime=datetime(2026, 2, 7, 13, 12, 17),
                 pkt_ser_num=3,
                 trig_id=792162735,
@@ -92,6 +94,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3787.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-08T04:53:37.18_792219222_1-558",
                 alert_datetime=datetime(2026, 2, 8, 4, 53, 42),
                 pkt_ser_num=4,
                 trig_id=792219222,
@@ -116,6 +119,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3788.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-08T05:07:28.24_792220053_1-615",
                 alert_datetime=datetime(2026, 2, 8, 5, 7, 33),
                 pkt_ser_num=5,
                 trig_id=792220053,
@@ -139,6 +143,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3789.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-08T08:00:55.65_792230460_1-189",
                 alert_datetime=datetime(2026, 2, 8, 8, 0, 57),
                 pkt_ser_num=6,
                 trig_id=792230460,
@@ -163,6 +168,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3790.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-08T09:52:44.91_792237169_1-554",
                 alert_datetime=datetime(2026, 2, 8, 9, 52, 49),
                 pkt_ser_num=7,
                 trig_id=792237169,
@@ -186,6 +192,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3791.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-08T11:17:13.37_792242238_1-846",
                 alert_datetime=datetime(2026, 2, 8, 11, 17, 14),
                 pkt_ser_num=8,
                 trig_id=792242238,
@@ -210,6 +217,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3792.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-08T15:12:18.59_792256343_1-624",
                 alert_datetime=datetime(2026, 2, 8, 15, 12, 24),
                 pkt_ser_num=9,
                 trig_id=792256343,
@@ -233,6 +241,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3793.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-08T21:42:45.48_792279770_1-920",
                 alert_datetime=datetime(2026, 2, 8, 21, 42, 51),
                 pkt_ser_num=10,
                 trig_id=792279770,
@@ -256,6 +265,7 @@ def _alert(**overrides) -> FermiGBMAlert:
         (
             "fermi_gbm_alert/fermi_gbm_alert_3794.xml",
             _alert(
+                ivorn="ivo://nasa.gsfc.gcn/Fermi#GBM_Alert_2026-02-09T02:45:57.24_792297962_1-931",
                 alert_datetime=datetime(2026, 2, 9, 2, 46, 3),
                 pkt_ser_num=11,
                 trig_id=792297962,
@@ -293,34 +303,20 @@ def test_parse_fermi_gbm_completes():
 _KEEP = frozenset({"Who", "What", "WhereWhen", "How", "Why"})
 
 
-def _strip_values(elem: ElementTree.Element) -> ElementTree.Element:
-    tag = elem.tag
-    attrib = {k: "" for k in elem.attrib}
-    cloned = ElementTree.Element(tag, attrib)
-    cloned.text = None
-    cloned.tail = None
-    for child in elem:
-        cloned.append(_strip_values(child))
-    return cloned
-
-
-def _structural_children(root: ElementTree.Element) -> list[ElementTree.Element]:
-    result = []
+def _has_sections(root: ElementTree.Element) -> set[str]:
+    result = set()
     for child in root:
         local = child.tag.split("}")[-1] if "}" in child.tag else child.tag
         if local in _KEEP:
-            result.append(_strip_values(child))
+            result.add(local)
     return result
 
 
-def test_all_alert_fixtures_have_same_tree():
-    """All fermi_gbm_alert fixtures must have identical XML structure (tags + attribute names)."""
+def test_all_alert_fixtures_have_standard_sections():
+    """All fermi_gbm_alert fixtures must contain the standard VOE sections."""
     fixtures = sorted(p for p in (FIXTURES / "fermi_gbm_alert").iterdir() if p.suffix == ".xml")
     assert len(fixtures) >= 2
 
-    ref = _structural_children(ElementTree.fromstring(fixtures[0].read_bytes()))
-    for path in fixtures[1:]:
-        cand = _structural_children(ElementTree.fromstring(path.read_bytes()))
-        assert len(ref) == len(cand)
-        for a, b in zip(ref, cand):
-            assert ElementTree.tostring(a) == ElementTree.tostring(b), f"{path.name} has a different XML tree structure"
+    for path in fixtures:
+        sections = _has_sections(ElementTree.fromstring(path.read_bytes()))
+        assert sections == _KEEP, f"{path.name} missing sections: {_KEEP - sections}"

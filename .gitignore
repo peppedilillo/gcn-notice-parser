@@ -9,8 +9,9 @@ wheels/
 # Virtual environments
 .venv
 
-# IDE
+# IDE & LLM
 .idea
+AGENTS.md
 
 # Secrets
 .secrets
