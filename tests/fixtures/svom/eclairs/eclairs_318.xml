@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<voe:VOEvent
+  xmlns:voe="http://www.ivoa.net/xml/VOEvent/v2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.ivoa.net/xml/VOEvent/v2.0 http://www.ivoa.net/xml/VOEvent/VOEvent-v2.0.xsd"
+  role="observation"
+  version="2.0"
+  ivorn="ivo://org.svom/fsc#sb26051004_slewing">
+  <Who>
+    <AuthorIVORN>ivo://org.svom/fsc</AuthorIVORN>
+    <Date>2026-05-10T17:20:19+00:00</Date>
+    <Author>
+      <title>SVOM French Science Center</title>
+      <shortName>FSC</shortName>
+      <contactName>Henri Louvin</contactName>
+      <contactEmail>svom-contact@cea.fr</contactEmail>
+    </Author>
+  </Who>
+  <What>
+    <Param name="Packet_Type" value="204" ucd="meta.id"/>
+    <Param name="Pkt_Ser_Num" value="1" ucd="meta.id"/>
+    <Param name="Instrument" value="ECLAIRs" ucd="instr"/>
+    <Group name="Svom_Identifiers">
+      <Param name="Notice_Level" value="N1e" ucd="meta.id"/>
+      <Param name="Burst_Id" value="sb26051004" ucd="meta.id"/>
+      <Param name="Alert_Seq_T0" value="2026-05-10T17:13:44.569Z" ucd="time.start"/>
+    </Group>
+    <Group name="Detection_Info">
+      <Param name="SNR" value="12.18" unit="sigma" ucd="stat.snr"/>
+      <Param name="Timescale" value="10.2" unit="s" ucd="time.interval"/>
+      <Param name="Time_Window_Start" value="2026-05-10T17:13:38.230Z" ucd="time.start"/>
+      <Param name="Time_Window_End" value="2026-05-10T17:13:48.430Z" ucd="time.end"/>
+      <Param name="Lower_Energy_Bound" value="8" unit="keV" ucd="em.energy"/>
+      <Param name="Upper_Energy_Bound" value="120" unit="keV" ucd="em.energy"/>
+      <Param name="Trigger_Type" value="CRT" ucd="instr.param"/>
+    </Group>
+    <Group name="Target_Info">
+      <Param name="Galactic_Lon" value="242.86" unit="deg" ucd="pos.galactic.lon"/>
+      <Param name="Galactic_Lat" value="48.75" unit="deg" ucd="pos.galactic.lat"/>
+      <Param name="Moon_Angle" value="168.82" unit="deg" ucd="pos.angdistance"/>
+      <Param name="Sun_Angle" value="108.76" unit="deg" ucd="pos.angdistance"/>
+    </Group>
+    <Group name="Satellite_Info">
+      <Param name="Slew_Status" value="accepted" ucd="meta.code.status"/>
+      <Param name="Attitude_Ra" value="173.22" unit="deg" ucd="instr.param"/>
+      <Param name="Attitude_Dec" value="-34.58" unit="deg" ucd="instr.param"/>
+      <Param name="Attitude_Roll" value="95.19" unit="deg" ucd="instr.param"/>
+      <Param name="Sat_Longitude" value="33.59" unit="deg" ucd="pos.earth.lon"/>
+      <Param name="Sat_Latitude" value="7.55" unit="deg" ucd="pos.earth.lat"/>
+      <Param name="Sat_Altitude" value="619.21" unit="km" ucd="pos.earth.altitude"/>
+    </Group>
+  </What>
+  <WhereWhen>
+    <ObsDataLocation>
+      <ObservatoryLocation id="GEOLEO"/>
+      <ObservationLocation>
+        <AstroCoordSystem id="UTC-ICRS-GEO"/>
+        <AstroCoords coord_system_id="UTC-ICRS-GEO">
+          <Time unit="s">
+            <TimeInstant>
+              <ISOTime>2026-05-10T17:13:38.230000</ISOTime>
+            </TimeInstant>
+          </Time>
+          <Position2D unit="deg">
+            <Name1>RA</Name1>
+            <Name2>Dec</Name2>
+            <Value2>
+              <C1>157.9595</C1>
+              <C2>2.8711</C2>
+            </Value2>
+            <Error2Radius>0.1105</Error2Radius>
+          </Position2D>
+        </AstroCoords>
+      </ObservationLocation>
+    </ObsDataLocation>
+  </WhereWhen>
+  <How>
+    <Description>N1e notice, data from ECLAIRs</Description>
+    <Reference uri="https://www.svom.eu/en/telescope-eclairs-en/"/>
+  </How>
+  <Citations>
+    <EventIVORN cite="followup">ivo://org.svom/fsc#sb26051004_eclairs-wakeup</EventIVORN>
+  </Citations>
+</voe:VOEvent>
