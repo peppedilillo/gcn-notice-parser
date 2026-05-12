@@ -5,15 +5,14 @@ from pydantic import BaseModel
 
 from gcnparser.parse_xml import attr
 from gcnparser.parse_xml import group_param
+from gcnparser.parse_xml import opt_group_datetime
+from gcnparser.parse_xml import opt_group_float
+from gcnparser.parse_xml import opt_position_float
 from gcnparser.parse_xml import param
 from gcnparser.parse_xml import parse_utc_datetime
 from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
-from gcnparser.svom._svom_xml import opt_group_datetime
-from gcnparser.svom._svom_xml import opt_group_float
-from gcnparser.svom._svom_xml import opt_position_float
-from gcnparser.svom._svom_xml import parse_datetime
 
 
 class SvomGrmTrigger(BaseModel):
@@ -114,7 +113,7 @@ _ROOT_RULES = {
 _WHO_RULES = {
     "author_contact_name": lambda r: text(r, "Who/Author/contactName"),
     "author_email": lambda r: text(r, "Who/Author/contactEmail"),
-    "alert_datetime": lambda r: parse_datetime(text(r, "Who/Date")),
+    "alert_datetime": lambda r: parse_utc_datetime(text(r, "Who/Date")),
 }
 
 _WHAT_RULES = {
@@ -126,8 +125,8 @@ _WHAT_RULES = {
     "alert_seq_t0": lambda r: opt_group_datetime(r, "Svom_Identifiers", "Alert_Seq_T0"),
     "snr": lambda r: float(group_param(r, "Detection_Info", "SNR")),
     "timescale": lambda r: float(group_param(r, "Detection_Info", "Timescale")),
-    "time_window_start": lambda r: parse_datetime(group_param(r, "Detection_Info", "Time_Window_Start")),
-    "time_window_end": lambda r: parse_datetime(group_param(r, "Detection_Info", "Time_Window_End")),
+    "time_window_start": lambda r: parse_utc_datetime(group_param(r, "Detection_Info", "Time_Window_Start")),
+    "time_window_end": lambda r: parse_utc_datetime(group_param(r, "Detection_Info", "Time_Window_End")),
     "lower_energy_bound": lambda r: float(group_param(r, "Detection_Info", "Lower_Energy_Bound")),
     "upper_energy_bound": lambda r: float(group_param(r, "Detection_Info", "Upper_Energy_Bound")),
     "triggered_grds": lambda r: group_param(r, "Detection_Info", "Triggered_GRDs"),

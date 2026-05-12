@@ -4,3 +4,7 @@ class ParseError(Exception):
 
 class FieldParseError(ParseError):
     pass
+
+
+class UnsupportedTopicError(Exception):
+    pass

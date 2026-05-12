@@ -11,6 +11,7 @@ from gcnparser.fermi.fermi_lat_pos_ini import parse_fermi_lat_pos_ini
 from gcnparser.parse_json import parse_json_notice
 from gcnparser.parse_xml import param as _param
 from gcnparser.parse_xml import parse_voevent_notice
+from gcnparser.parse_xml import parse_voevent_root
 
 FIXTURES = Path("tests/fixtures/fermi")
 EP_FIXTURES = Path("tests/fixtures/ep")
@@ -58,6 +59,24 @@ def test_parse_notice_wraps_malformed_xml():
 
     assert "dummy_parser: failed to parse document" in str(exc_info.value)
     assert isinstance(exc_info.value.__cause__, Exception)
+
+
+def test_parse_voevent_root_wraps_malformed_xml():
+    payload = b"<VOEvent"
+
+    with pytest.raises(ParseError) as exc_info:
+        parse_voevent_root(payload, "dummy_parser")
+
+    assert "dummy_parser: failed to parse document" in str(exc_info.value)
+    assert isinstance(exc_info.value.__cause__, Exception)
+
+
+def test_parse_voevent_root_returns_root():
+    payload = b"<VOEvent><What /></VOEvent>"
+
+    root = parse_voevent_root(payload, "dummy_parser")
+
+    assert root.tag == "VOEvent"
 
 
 def test_parse_json_notice_wraps_malformed_json():

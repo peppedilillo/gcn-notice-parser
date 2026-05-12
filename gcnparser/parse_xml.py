@@ -26,11 +26,15 @@ def parse_utc_datetime(value: str) -> datetime:
     return parsed.astimezone(timezone.utc)
 
 
-def parse_voevent_notice(value: bytes, model: type, parser_name: str, sections: Sections):
+def parse_voevent_root(value: bytes, parser_name: str) -> ET.Element:
     try:
-        root = ET.fromstring(value)
+        return ET.fromstring(value)
     except ET.ParseError as exc:
         raise ParseError(f"{parser_name}: failed to parse document: {exc}") from exc
+
+
+def parse_voevent_notice(value: bytes, model: type, parser_name: str, sections: Sections):
+    root = parse_voevent_root(value, parser_name)
 
     data = {}
     for section_name, rules in sections.items():
@@ -62,11 +66,6 @@ def root_attr(root: ET.Element, attr_name: str) -> str:
     return root.get(attr_name)
 
 
-def opt_text(root: ET.Element, path: str) -> str | None:
-    elem = root.find(path)
-    return elem.text if elem is not None else None
-
-
 def group_flag(root: ET.Element, group: str, name: str) -> bool:
     return root.find(f".//What/Group[@name='{group}']/Param[@name='{name}']").get("value") == "true"
 
@@ -74,3 +73,31 @@ def group_flag(root: ET.Element, group: str, name: str) -> bool:
 def group_param(root: ET.Element, group: str, name: str) -> str | None:
     elem = root.find(f".//What/Group[@name='{group}']/Param[@name='{name}']")
     return elem.get("value") if elem is not None else None
+
+
+def opt_position_float(root: ET.Element, path: str) -> float | None:
+    elem = root.find(path)
+    return float(elem.text) if elem is not None else None
+
+
+def opt_text(root: ET.Element, path: str) -> str | None:
+    elem = root.find(path)
+    return elem.text if elem is not None else None
+
+
+def opt_group_datetime(root: ET.Element, group: str, name: str) -> datetime | None:
+    value = group_param(root, group, name)
+    return parse_utc_datetime(value) if value is not None else None
+
+
+def opt_group_float(root: ET.Element, group: str, name: str) -> float | None:
+    value = group_param(root, group, name)
+    return float(value) if value is not None else None
+
+
+def citations(root: ET.Element, cite: str) -> tuple[str, ...]:
+    return tuple(elem.text for elem in root.findall(f"Citations/EventIVORN[@cite='{cite}']"))
+
+
+def description(root: ET.Element) -> str | None:
+    return opt_text(root, "How/Description") or opt_text(root, "Citations/Description")

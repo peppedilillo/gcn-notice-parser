@@ -5,14 +5,13 @@ from typing import Annotated
 from pydantic import BaseModel
 
 from gcnparser.parse_xml import attr
+from gcnparser.parse_xml import citations
 from gcnparser.parse_xml import group_param
 from gcnparser.parse_xml import param
 from gcnparser.parse_xml import parse_utc_datetime
 from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
-from gcnparser.svom._svom_xml import citations
-from gcnparser.svom._svom_xml import parse_datetime
 
 
 class MxtPacketType(IntEnum):
@@ -75,7 +74,7 @@ _ROOT_RULES = {
 _WHO_RULES = {
     "author_contact_name": lambda r: text(r, "Who/Author/contactName"),
     "author_email": lambda r: text(r, "Who/Author/contactEmail"),
-    "alert_datetime": lambda r: parse_datetime(text(r, "Who/Date")),
+    "alert_datetime": lambda r: parse_utc_datetime(text(r, "Who/Date")),
 }
 
 _WHAT_RULES = {
@@ -85,7 +84,7 @@ _WHAT_RULES = {
     "notice_level": lambda r: group_param(r, "Svom_Identifiers", "Notice_Level"),
     "burst_id": lambda r: group_param(r, "Svom_Identifiers", "Burst_Id"),
     "alert_seq_t0": lambda r: (
-        parse_datetime(group_param(r, "Svom_Identifiers", "Alert_Seq_T0"))
+        parse_utc_datetime(group_param(r, "Svom_Identifiers", "Alert_Seq_T0"))
         if group_param(r, "Svom_Identifiers", "Alert_Seq_T0") is not None
         else None
     ),
