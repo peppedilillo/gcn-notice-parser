@@ -72,7 +72,7 @@ TOPICS = {
     ],
 }
 
-SUFFIX = {
+INST_SUFFIX = {
     "fermi": ".xml",
     "swift": ".xml",
     "svom": ".xml",
@@ -93,11 +93,12 @@ def build_reverse_map(topics: dict) -> dict:
 
 def count_existing(topics: dict) -> dict:
     counts = {}
+    suffixes = set(INST_SUFFIX.values())
     for instrument, topic_list in topics.items():
         for topic in topic_list:
             channel = channel_name(topic)
             d = FIXTURES_ROOT / instrument / channel
-            counts[topic] = len(list(d.glob("*.xml"))) if d.exists() else 0
+            counts[topic] = len([*filter(lambda x: x.suffix in suffixes, d.iterdir())]) if d.exists() else 0
     return counts
 
 
@@ -108,7 +109,7 @@ def all_saturated(collected: dict, quota: int) -> bool:
 def save_fixture(instrument: str, channel: str, offset: int, content: bytes) -> Path:
     dest = FIXTURES_ROOT / instrument / channel
     dest.mkdir(parents=True, exist_ok=True)
-    path = dest / f"{channel}_{offset}{SUFFIX[instrument]}"
+    path = dest / f"{channel}_{offset}{INST_SUFFIX[instrument]}"
     path.write_bytes(content)
     return path
 
