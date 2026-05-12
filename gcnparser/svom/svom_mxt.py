@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from gcnparser.parse_xml import attr
 from gcnparser.parse_xml import group_param
 from gcnparser.parse_xml import param
+from gcnparser.parse_xml import parse_utc_datetime
 from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
@@ -107,7 +108,7 @@ _WHAT_RULES = {
 }
 
 _WHEREWHEN_RULES = {
-    "burst_datetime": lambda r: datetime.fromisoformat(
+    "burst_datetime": lambda r: parse_utc_datetime(
         text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Time/TimeInstant/ISOTime")
     ),
     "ra": lambda r: float(text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Position2D/Value2/C1")),

@@ -6,6 +6,7 @@ import pytest
 
 from gcnparser.fermi.fermi_lat_offline import FermiLATOffline
 from gcnparser.fermi.fermi_lat_offline import parse_fermi_lat_offline
+from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")
 
@@ -33,7 +34,7 @@ _BASE = dict(
 
 
 def _lat_offline(**overrides) -> FermiLATOffline:
-    return FermiLATOffline(**{**_BASE, **overrides})
+    return FermiLATOffline(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(

@@ -6,6 +6,7 @@ import pytest
 
 from gcnparser.fermi.fermi_lat_pos_ini import FermiLATPosIni
 from gcnparser.fermi.fermi_lat_pos_ini import parse_fermi_lat_pos_ini
+from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")
 
@@ -34,7 +35,7 @@ _BASE = dict(
 
 
 def _lat_pos_ini(**overrides) -> FermiLATPosIni:
-    return FermiLATPosIni(**{**_BASE, **overrides})
+    return FermiLATPosIni(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(

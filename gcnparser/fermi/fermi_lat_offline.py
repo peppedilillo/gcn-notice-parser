@@ -7,6 +7,7 @@ from gcnparser.parse_xml import attr
 from gcnparser.parse_xml import group_flag
 from gcnparser.parse_xml import opt_text
 from gcnparser.parse_xml import param
+from gcnparser.parse_xml import parse_utc_datetime
 from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
@@ -91,7 +92,7 @@ _ROOT_RULES = {
 _WHO_RULES = {
     "author_contact_name": lambda r: text(r, "Who/Author/contactName"),
     "author_email": lambda r: text(r, "Who/Author/contactEmail"),
-    "alert_datetime": lambda r: datetime.fromisoformat(text(r, "Who/Date")),
+    "alert_datetime": lambda r: parse_utc_datetime(text(r, "Who/Date")),
 }
 
 _WHAT_RULES = {
@@ -118,7 +119,7 @@ _WHAT_RULES = {
 }
 
 _WHEREWHEN_RULES = {
-    "burst_datetime": lambda r: datetime.fromisoformat(
+    "burst_datetime": lambda r: parse_utc_datetime(
         text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Time/TimeInstant/ISOTime")
     ),
     "ra": lambda r: float(text(r, "WhereWhen/ObsDataLocation/ObservationLocation/AstroCoords/Position2D/Value2/C1")),

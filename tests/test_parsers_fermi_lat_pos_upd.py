@@ -6,6 +6,7 @@ import pytest
 
 from gcnparser.fermi.fermi_lat_pos_upd import FermiLATPosUpd
 from gcnparser.fermi.fermi_lat_pos_upd import parse_fermi_lat_pos_upd
+from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")
 
@@ -38,7 +39,7 @@ _BASE = dict(
 
 
 def _lat_pos_upd(**overrides) -> FermiLATPosUpd:
-    return FermiLATPosUpd(**{**_BASE, **overrides})
+    return FermiLATPosUpd(**utcify_datetimes({**_BASE, **overrides}))
 
 
 _FOLLOWUP = "ivo://nasa.gsfc.gcn/Fermi#LAT_Initial_Pos_2026-01--9130T00:00:00.00_793795104_0-086"

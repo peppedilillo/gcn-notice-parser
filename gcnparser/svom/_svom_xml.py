@@ -1,18 +1,11 @@
-"""Internal SVOM-specific XML helpers.
-
-These helpers keep small conversion and fallback logic out of the mission
-parser rule maps.
-"""
+"""Internal SVOM-specific XML helpers."""
 
 from datetime import datetime
 from xml.etree import ElementTree as ET
 
 from gcnparser.parse_xml import group_param
 from gcnparser.parse_xml import opt_text
-
-
-def parse_datetime(value: str) -> datetime:
-    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+from gcnparser.parse_xml import parse_utc_datetime as parse_datetime
 
 
 def opt_group_datetime(root: ET.Element, group: str, name: str) -> datetime | None:

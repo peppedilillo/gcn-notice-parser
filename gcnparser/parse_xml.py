@@ -5,6 +5,8 @@ This module contains the small helpers used by mission-specific parsers
 """
 
 from collections.abc import Callable
+from datetime import datetime
+from datetime import timezone
 from xml.etree import ElementTree as ET
 
 from pydantic import ValidationError
@@ -15,6 +17,13 @@ from gcnparser.exceptions import ParseError
 Rule = Callable[[ET.Element], object]
 SectionRules = dict[str, Rule]
 Sections = dict[str, SectionRules]
+
+
+def parse_utc_datetime(value: str) -> datetime:
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
 
 
 def parse_voevent_notice(value: bytes, model: type, parser_name: str, sections: Sections):

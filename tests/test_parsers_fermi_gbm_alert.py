@@ -6,6 +6,7 @@ import pytest
 
 from gcnparser.fermi.fermi_gbm_alert import FermiGBMAlert
 from gcnparser.fermi.fermi_gbm_alert import parse_fermi_gbm_alert
+from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")
 
@@ -37,7 +38,7 @@ _BASE = dict(
 
 
 def _alert(**overrides) -> FermiGBMAlert:
-    return FermiGBMAlert(**{**_BASE, **overrides})
+    return FermiGBMAlert(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(

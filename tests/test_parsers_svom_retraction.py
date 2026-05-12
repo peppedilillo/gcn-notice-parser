@@ -54,6 +54,12 @@ def test_parse_svom_retraction_from_multi_target_fixture():
     )
 
 
+def test_parse_svom_retraction_burst_datetime_is_utc_aware():
+    result = parse_svom_retraction(Path("tests/fixtures/svom/eclairs/eclairs_304.xml").read_bytes())
+
+    assert result.burst_datetime.tzinfo == timezone.utc
+
+
 def test_parse_all_svom_retraction_fixtures():
     for path in _retraction_fixtures():
         result = parse_svom_retraction(path.read_bytes())

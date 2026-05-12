@@ -8,6 +8,7 @@ import pytest
 from gcnparser.svom import MxtPacketType
 from gcnparser.svom import parse_svom_mxt
 from gcnparser.svom import SvomMxtNotice
+from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/mxt")
 
@@ -23,7 +24,7 @@ _BASE = dict(
 
 
 def _notice(**overrides) -> SvomMxtNotice:
-    return SvomMxtNotice(**{**_BASE, **overrides})
+    return SvomMxtNotice(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(

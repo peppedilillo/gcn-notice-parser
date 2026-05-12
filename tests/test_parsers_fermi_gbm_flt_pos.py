@@ -6,6 +6,7 @@ import pytest
 
 from gcnparser.fermi.fermi_gbm_flt_pos import FermiGBMFltPos
 from gcnparser.fermi.fermi_gbm_flt_pos import parse_fermi_gbm_flt_pos
+from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")
 
@@ -33,7 +34,7 @@ _BASE = dict(
 
 
 def _flt_pos(**overrides) -> FermiGBMFltPos:
-    return FermiGBMFltPos(**{**_BASE, **overrides})
+    return FermiGBMFltPos(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(

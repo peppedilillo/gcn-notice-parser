@@ -9,6 +9,7 @@ from gcnparser.exceptions import ParseError
 from gcnparser.svom import EclairsPacketType
 from gcnparser.svom import parse_svom_eclairs
 from gcnparser.svom import SvomEclairsNotice
+from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/eclairs")
 
@@ -28,7 +29,7 @@ _BASE = dict(
 
 
 def _notice(**overrides) -> SvomEclairsNotice:
-    return SvomEclairsNotice(**{**_BASE, **overrides})
+    return SvomEclairsNotice(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(
@@ -100,15 +101,13 @@ def _notice(**overrides) -> SvomEclairsNotice:
         ),
         (
             "svom_voevent_sb25091702_eclairs-catalog.xml",
-            SvomEclairsNotice(
+            _notice(
                 author_contact_name="Timothe Roland",
                 author_email="svom-contact@cea.fr",
                 ivorn="ivo://org.svom/fsc#sb25091702_eclairs-catalog",
                 alert_datetime=datetime(2025, 9, 17, 12, 1, 42, tzinfo=timezone.utc),
                 packet_type=EclairsPacketType.CATALOG,
                 pkt_ser_num=1,
-                instrument="ECLAIRs",
-                notice_level="N1e",
                 burst_id="sb25091702",
                 snr=24.95,
                 timescale=20.48,
@@ -132,12 +131,8 @@ def _notice(**overrides) -> SvomEclairsNotice:
                 ra=256.5645,
                 dec=-43.0392,
                 error_radius=0.0613,
-                description="N1e notice, data from ECLAIRs",
-                reference_uri="https://www.svom.eu/en/telescope-eclairs-en/",
-                alert_seq_t0=None,
                 onboard_catalog_id=81,
                 source_name="GX 340-00",
-                followups=(),
             ),
         ),
         (

@@ -7,6 +7,7 @@ import pytest
 
 from gcnparser.svom import parse_svom_grm_trigger
 from gcnparser.svom import SvomGrmTrigger
+from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/grm")
 
@@ -23,7 +24,7 @@ _BASE = dict(
 
 
 def _trigger(**overrides) -> SvomGrmTrigger:
-    return SvomGrmTrigger(**{**_BASE, **overrides})
+    return SvomGrmTrigger(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(
