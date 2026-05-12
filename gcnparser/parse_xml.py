@@ -1,7 +1,7 @@
-"""Shared XML extraction helpers and parser error boundary.
+"""Shared XML extraction helpers and error handling.
 
-This module contains the small helper surface used by mission-specific
-parsers plus the common ``parse_notice`` assembly routine.
+This module contains the small helpers used by mission-specific parsers
+ plus the common ``parse_notice`` assembly routine.
 """
 
 from collections.abc import Callable
@@ -9,20 +9,15 @@ from xml.etree import ElementTree as ET
 
 from pydantic import ValidationError
 
+from gcnparser.exceptions import FieldParseError
+from gcnparser.exceptions import ParseError
+
 Rule = Callable[[ET.Element], object]
 SectionRules = dict[str, Rule]
 Sections = dict[str, SectionRules]
 
 
-class ParseError(Exception):
-    pass
-
-
-class FieldParseError(ParseError):
-    pass
-
-
-def parse_notice(value: bytes, model: type, parser_name: str, sections: Sections):
+def parse_voevent_notice(value: bytes, model: type, parser_name: str, sections: Sections):
     try:
         root = ET.fromstring(value)
     except ET.ParseError as exc:

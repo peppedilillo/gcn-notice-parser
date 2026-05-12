@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 
 import pytest
 
-from gcnparser.parse_xml import ParseError
+from gcnparser.exceptions import ParseError
 from gcnparser.svom import EclairsPacketType
 from gcnparser.svom import parse_svom_eclairs
 from gcnparser.svom import SvomEclairsNotice

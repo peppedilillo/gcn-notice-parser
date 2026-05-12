@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from gcnparser.parse_xml import attr
 from gcnparser.parse_xml import group_param
 from gcnparser.parse_xml import param
-from gcnparser.parse_xml import parse_notice
+from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
 from gcnparser.svom._svom_xml import opt_group_datetime
@@ -178,7 +178,7 @@ def parse_svom_grm_trigger(value: bytes) -> SvomGrmTrigger:
         FieldParseError: If a specific field cannot be extracted from the
             notice.
     """
-    return parse_notice(
+    return parse_voevent_notice(
         value,
         SvomGrmTrigger,
         "parse_svom_grm_trigger",

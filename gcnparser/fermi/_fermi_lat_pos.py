@@ -7,7 +7,7 @@ from gcnparser.parse_xml import attr
 from gcnparser.parse_xml import group_flag
 from gcnparser.parse_xml import opt_text
 from gcnparser.parse_xml import param
-from gcnparser.parse_xml import parse_notice
+from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
 
@@ -178,7 +178,7 @@ def parse_fermi_lat_pos(value: bytes) -> FermiLATPos:
         FieldParseError: If a specific field cannot be extracted from the
             notice.
     """
-    return parse_notice(
+    return parse_voevent_notice(
         value,
         FermiLATPos,
         "parse_fermi_lat_pos",
