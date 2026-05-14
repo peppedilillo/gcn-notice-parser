@@ -7,8 +7,8 @@ import pytest
 
 from gcnparser.exceptions import ParseError
 from gcnparser.svom import parse_svom_eclairs
-from gcnparser.svom import SvomEclairsNotice
-from gcnparser.svom import SvomPacketType
+from gcnparser.svom import SvomEclairs
+from gcnparser.svom import SvomPacket
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/eclairs")
@@ -28,8 +28,8 @@ _BASE = dict(
 )
 
 
-def _notice(**overrides) -> SvomEclairsNotice:
-    return SvomEclairsNotice(**utcify_datetimes({**_BASE, **overrides}))
+def _notice(**overrides) -> SvomEclairs:
+    return SvomEclairs(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(
@@ -40,7 +40,7 @@ def _notice(**overrides) -> SvomEclairsNotice:
             _notice(
                 ivorn="ivo://org.svom/fsc#sb26021102_eclairs-wakeup",
                 alert_datetime=datetime(2026, 2, 11, 19, 25, 50, tzinfo=timezone.utc),
-                packet_type=SvomPacketType.ECLAIR_WAKEUP,
+                packet_type=SvomPacket.ECLAIR_WAKEUP,
                 burst_id="sb26021102",
                 snr=12.79,
                 timescale=40.96,
@@ -71,7 +71,7 @@ def _notice(**overrides) -> SvomEclairsNotice:
             _notice(
                 ivorn="ivo://org.svom/fsc#sb26041206_eclairs-wakeup",
                 alert_datetime=datetime(2026, 4, 12, 6, 23, 20, tzinfo=timezone.utc),
-                packet_type=SvomPacketType.ECLAIR_WAKEUP,
+                packet_type=SvomPacket.ECLAIR_WAKEUP,
                 burst_id="sb26041206",
                 snr=32.31,
                 timescale=20.4,
@@ -106,7 +106,7 @@ def _notice(**overrides) -> SvomEclairsNotice:
                 author_email="svom-contact@cea.fr",
                 ivorn="ivo://org.svom/fsc#sb25091702_eclairs-catalog",
                 alert_datetime=datetime(2025, 9, 17, 12, 1, 42, tzinfo=timezone.utc),
-                packet_type=SvomPacketType.ECLAIR_CATALOG,
+                packet_type=SvomPacket.ECLAIR_CATALOG,
                 pkt_ser_num=1,
                 burst_id="sb25091702",
                 snr=24.95,
@@ -140,7 +140,7 @@ def _notice(**overrides) -> SvomEclairsNotice:
             _notice(
                 ivorn="ivo://org.svom/fsc#sb26022501_slewing",
                 alert_datetime=datetime(2026, 2, 25, 8, 54, 17, tzinfo=timezone.utc),
-                packet_type=SvomPacketType.ECLAIR_SLEWING,
+                packet_type=SvomPacket.ECLAIR_SLEWING,
                 burst_id="sb26022501",
                 snr=16.32,
                 timescale=40.96,
@@ -175,7 +175,7 @@ def _notice(**overrides) -> SvomEclairsNotice:
             _notice(
                 ivorn="ivo://org.svom/fsc#sb26021102_not-slewing",
                 alert_datetime=datetime(2026, 2, 11, 19, 32, 24, tzinfo=timezone.utc),
-                packet_type=SvomPacketType.ECLAIR_NOT_SLEWING,
+                packet_type=SvomPacket.ECLAIR_NOT_SLEWING,
                 burst_id="sb26021102",
                 snr=14.48,
                 timescale=20.4,

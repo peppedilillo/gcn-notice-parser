@@ -16,8 +16,7 @@ from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import parse_voevent_root
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
-
-from ._svom import SvomPacketType
+from gcnparser.svom import SvomPacket
 
 
 class SvomRetraction(BaseModel):
@@ -31,7 +30,7 @@ class SvomRetraction(BaseModel):
     author_email: str
     alert_datetime: Annotated[datetime, "ISO8601"]
     ivorn: str
-    packet_type: int
+    packet_type: SvomPacket
     pkt_ser_num: int
     instrument: str
     notice_level: str
@@ -136,7 +135,7 @@ def is_svom_retraction(value: bytes) -> bool:
         True if the the notice is a SVOM retraction.
     """
     root = parse_voevent_root(value, "is_svom_retraction")
-    return int(param(root, "Packet_Type")) == SvomPacketType.RETRACTION
+    return int(param(root, "Packet_Type")) == SvomPacket.RETRACTION
 
 
 def parse_svom_retraction(value: bytes) -> SvomRetraction:

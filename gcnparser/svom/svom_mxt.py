@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import IntEnum
 from typing import Annotated
 
 from pydantic import BaseModel
@@ -12,20 +11,14 @@ from gcnparser.parse_xml import parse_utc_datetime
 from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
-
-
-class MxtPacketType(IntEnum):
-    """SVOM MXT notice packet type identifiers."""
-
-    INITIAL = 209
-    UPDATE = 210
+from gcnparser.svom import SvomPacket
 
 
 def parse_bool(value: str) -> bool:
     return value.lower() == "true"
 
 
-class SvomMxtNotice(BaseModel):
+class SvomMxt(BaseModel):
     """Parsed SVOM MXT notice.
 
     Covers both packet-209 initial notices and packet-210 update notices.
@@ -36,7 +29,7 @@ class SvomMxtNotice(BaseModel):
     author_email: str
     alert_datetime: Annotated[datetime, "ISO8601"]
     ivorn: str
-    packet_type: MxtPacketType
+    packet_type: SvomPacket
     pkt_ser_num: int
     instrument: str
     notice_level: str
@@ -78,7 +71,7 @@ _WHO_RULES = {
 }
 
 _WHAT_RULES = {
-    "packet_type": lambda r: MxtPacketType(int(param(r, "Packet_Type"))),
+    "packet_type": lambda r: SvomPacket(int(param(r, "Packet_Type"))),
     "pkt_ser_num": lambda r: int(param(r, "Pkt_Ser_Num")),
     "instrument": lambda r: param(r, "Instrument"),
     "notice_level": lambda r: group_param(r, "Svom_Identifiers", "Notice_Level"),
@@ -127,7 +120,7 @@ _CITATIONS_RULES = {
 }
 
 
-def parse_svom_mxt(value: bytes) -> SvomMxtNotice:
+def parse_svom_mxt(value: bytes) -> SvomMxt:
     """Parses an SVOM MXT notice.
 
     Args:
@@ -144,7 +137,7 @@ def parse_svom_mxt(value: bytes) -> SvomMxtNotice:
     """
     return parse_voevent_notice(
         value,
-        SvomMxtNotice,
+        SvomMxt,
         "parse_svom_mxt",
         {
             "VOEvent": _ROOT_RULES,

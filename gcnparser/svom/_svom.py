@@ -3,10 +3,12 @@
 from enum import IntEnum
 
 
-class SvomPacketType(IntEnum):
+class SvomPacket(IntEnum):
     """SVOM ECLAIRs notice packet type identifiers.
-
     See `https://fsc.svom.org/readthedocs/svom/notices_and_circulars/notice_levels.html`
+
+    We implement a specific type because notices with different packe type (and schema)
+    may be streamed from the same topic.
     """
 
     GRM_TRIGGER = 201

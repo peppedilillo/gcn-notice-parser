@@ -5,9 +5,9 @@ from xml.etree import ElementTree
 
 import pytest
 
-from gcnparser.svom import MxtPacketType
 from gcnparser.svom import parse_svom_mxt
-from gcnparser.svom import SvomMxtNotice
+from gcnparser.svom import SvomMxt
+from gcnparser.svom import SvomPacket
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/mxt")
@@ -23,8 +23,8 @@ _BASE = dict(
 )
 
 
-def _notice(**overrides) -> SvomMxtNotice:
-    return SvomMxtNotice(**utcify_datetimes({**_BASE, **overrides}))
+def _notice(**overrides) -> SvomMxt:
+    return SvomMxt(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(
@@ -35,7 +35,7 @@ def _notice(**overrides) -> SvomMxtNotice:
             _notice(
                 ivorn="ivo://org.svom/fsc#sb26022501_mxt-initial_qf1",
                 alert_datetime=datetime(2026, 2, 25, 10, 17, 26, tzinfo=timezone.utc),
-                packet_type=MxtPacketType.INITIAL,
+                packet_type=209,
                 burst_id="sb26022501",
                 alert_seq_t0=None,
                 snr=42.0,
@@ -70,7 +70,7 @@ def _notice(**overrides) -> SvomMxtNotice:
             _notice(
                 ivorn="ivo://org.svom/fsc#sb26022802_mxt-update_qf2",
                 alert_datetime=datetime(2026, 3, 1, 1, 27, 8, tzinfo=timezone.utc),
-                packet_type=MxtPacketType.UPDATE,
+                packet_type=210,
                 burst_id="sb26022802",
                 alert_seq_t0=None,
                 snr=101.0,

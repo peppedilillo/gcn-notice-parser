@@ -6,7 +6,7 @@ from xml.etree import ElementTree
 import pytest
 
 from gcnparser.svom import parse_svom_grm_trigger
-from gcnparser.svom import SvomGrmTrigger
+from gcnparser.svom import SvomGrm
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/grm")
@@ -23,8 +23,8 @@ _BASE = dict(
 )
 
 
-def _trigger(**overrides) -> SvomGrmTrigger:
-    return SvomGrmTrigger(**utcify_datetimes({**_BASE, **overrides}))
+def _trigger(**overrides) -> SvomGrm:
+    return SvomGrm(**utcify_datetimes({**_BASE, **overrides}))
 
 
 @pytest.mark.parametrize(
@@ -182,7 +182,7 @@ def _trigger(**overrides) -> SvomGrmTrigger:
         ),
     ],
 )
-def test_parse_svom_grm_trigger(filename: str, expected: SvomGrmTrigger):
+def test_parse_svom_grm_trigger(filename: str, expected: SvomGrm):
     payload = (FIXTURES / filename).read_bytes()
     result = parse_svom_grm_trigger(payload)
     assert result == expected
@@ -194,7 +194,7 @@ def test_parse_svom_grm_completes():
         packet_type = int(root.find(".//What/Param[@name='Packet_Type']").get("value"))
         if packet_type == 201:
             result = parse_svom_grm_trigger(path.read_bytes())
-            assert isinstance(result, SvomGrmTrigger)
+            assert isinstance(result, SvomGrm)
 
 
 _KEEP = frozenset({"Who", "What", "WhereWhen", "How"})

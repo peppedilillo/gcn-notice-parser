@@ -14,10 +14,10 @@ from gcnparser.parse_xml import parse_utc_datetime
 from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
-from gcnparser.svom import SvomPacketType
+from gcnparser.svom import SvomPacket
 
 
-class SvomEclairsNotice(BaseModel):
+class SvomEclairs(BaseModel):
     """Parsed SVOM ECLAIRs VOEvent notice (N1e).
 
     Covers all ECLAIRs notice types: wake-up (202), catalog trigger (203),
@@ -72,7 +72,7 @@ class SvomEclairsNotice(BaseModel):
     author_email: str
     alert_datetime: Annotated[datetime, "ISO8601"]
     ivorn: str
-    packet_type: SvomPacketType
+    packet_type: SvomPacket
     pkt_ser_num: int
     instrument: str
     notice_level: str
@@ -118,7 +118,7 @@ _WHO_RULES = {
 }
 
 _WHAT_RULES = {
-    "packet_type": lambda r: SvomPacketType(int(param(r, "Packet_Type"))),
+    "packet_type": lambda r: SvomPacket(int(param(r, "Packet_Type"))),
     "pkt_ser_num": lambda r: int(param(r, "Pkt_Ser_Num")),
     "instrument": lambda r: param(r, "Instrument"),
     "notice_level": lambda r: group_param(r, "Svom_Identifiers", "Notice_Level"),
@@ -171,7 +171,7 @@ _CITATIONS_RULES = {
 }
 
 
-def parse_svom_eclairs(value: bytes) -> SvomEclairsNotice:
+def parse_svom_eclairs(value: bytes) -> SvomEclairs:
     """Parses an SVOM ECLAIRs VOEvent notice.
 
     Args:
@@ -189,7 +189,7 @@ def parse_svom_eclairs(value: bytes) -> SvomEclairsNotice:
     """
     return parse_voevent_notice(
         value,
-        SvomEclairsNotice,
+        SvomEclairs,
         "parse_svom_eclairs",
         {
             "VOEvent": _ROOT_RULES,

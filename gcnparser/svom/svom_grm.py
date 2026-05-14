@@ -13,9 +13,10 @@ from gcnparser.parse_xml import parse_utc_datetime
 from gcnparser.parse_xml import parse_voevent_notice
 from gcnparser.parse_xml import root_attr
 from gcnparser.parse_xml import text
+from gcnparser.svom import SvomPacket
 
 
-class SvomGrmTrigger(BaseModel):
+class SvomGrm(BaseModel):
     """Parsed SVOM GRM trigger notice (N1g, Packet_Type=201).
 
     Issued when at least 2 out of the 3 Gamma-Ray Detectors (GRDs) are
@@ -75,7 +76,7 @@ class SvomGrmTrigger(BaseModel):
     author_email: str
     alert_datetime: Annotated[datetime, "ISO8601"]
     ivorn: str
-    packet_type: int
+    packet_type: SvomPacket
     pkt_ser_num: int
     instrument: str
     notice_level: str
@@ -163,7 +164,7 @@ _HOW_RULES = {
 }
 
 
-def parse_svom_grm_trigger(value: bytes) -> SvomGrmTrigger:
+def parse_svom_grm_trigger(value: bytes) -> SvomGrm:
     """Parses an SVOM GRM trigger notice.
 
     Args:
@@ -180,7 +181,7 @@ def parse_svom_grm_trigger(value: bytes) -> SvomGrmTrigger:
     """
     return parse_voevent_notice(
         value,
-        SvomGrmTrigger,
+        SvomGrm,
         "parse_svom_grm_trigger",
         {
             "VOEvent": _ROOT_RULES,

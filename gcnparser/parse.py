@@ -22,9 +22,9 @@ from gcnparser.svom import parse_svom_eclairs
 from gcnparser.svom import parse_svom_grm_trigger
 from gcnparser.svom import parse_svom_mxt
 from gcnparser.svom import parse_svom_retraction
-from gcnparser.svom import SvomEclairsNotice
-from gcnparser.svom import SvomGrmTrigger
-from gcnparser.svom import SvomMxtNotice
+from gcnparser.svom import SvomEclairs
+from gcnparser.svom import SvomGrm
+from gcnparser.svom import SvomMxt
 from gcnparser.svom import SvomRetraction
 from gcnparser.topics import Topic
 
@@ -44,9 +44,9 @@ Notice = (
     | FermiLATPosIni
     | FermiLATPosUpd
     | SvomRetraction
-    | SvomMxtNotice
-    | SvomEclairsNotice
-    | SvomGrmTrigger
+    | SvomMxt
+    | SvomEclairs
+    | SvomGrm
     | EinsteinProbeWXT
 )
 

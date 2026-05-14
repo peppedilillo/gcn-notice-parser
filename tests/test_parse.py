@@ -8,7 +8,7 @@ from gcnparser.exceptions import ParseError
 from gcnparser.exceptions import UnsupportedTopicError
 from gcnparser.parse import parse
 from gcnparser.svom import is_svom_retraction
-from gcnparser.svom import SvomEclairsNotice
+from gcnparser.svom import SvomEclairs
 from gcnparser.svom import SvomRetraction
 from gcnparser.topics import Topic
 
@@ -43,7 +43,7 @@ def test_parse_dispatches_svom_eclairs_notice():
 
     result = parse(msg)
 
-    assert isinstance(result, SvomEclairsNotice)
+    assert isinstance(result, SvomEclairs)
 
 
 def test_parse_dispatches_svom_retraction_notice():
