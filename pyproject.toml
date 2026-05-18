@@ -9,16 +9,35 @@ description = "Parsers for the NASA GCN notices."
 keywords = ["astrophysics", "astronomy", "ssdc"]
 readme = "README.md"
 requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "Giuseppe Dilillo", email = "peppedilillo@gmail.com" },
+]
+maintainers = [
+    { name = "Giuseppe Dilillo", email = "peppedilillo@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
 dependencies = [
-    "click>=8.3.3",
     "pydantic>=2.13.4",
 ]
+
+[project.urls]
+Repository = "https://github.com/peppedilillo/gcn-parser"
+Issues = "https://github.com/peppedilillo/gcn-parser/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["gcn_parser"]
 
 [dependency-groups]
 dev = [
+    "click>=8.3.3",
     "black>=26.3.1",
     "gcn-kafka>=0.3.4",
     "isort>=8.0.1",

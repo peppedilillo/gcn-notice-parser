@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import StrEnum
 
 
-class Topic(str, Enum):
+class Topic(StrEnum):
     """GCN Kafka topics for which parsing is supported."""
 
     FERMI_GBM_ALERT: str = "gcn.classic.voevent.FERMI_GBM_ALERT"
