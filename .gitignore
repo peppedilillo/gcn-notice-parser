@@ -9,6 +9,9 @@ wheels/
 # Virtual environments
 .venv
 
+# OS files
+.DS_Store
+
 # IDE & LLM
 .idea
 AGENTS.md

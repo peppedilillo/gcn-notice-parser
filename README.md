@@ -69,16 +69,11 @@ consumer.subscribe([Topic.FERMI_GBM_FIN_POS, Topic.FERMI_GBM_GND_POS])
 
 while True:
     for message in consumer.consume(timeout=1):
-        try:
-            notice = parse(message)
-        except ParseError as exc:
-            print(f"Failed to parse {message.topic()}: {exc}")
-            continue
+        notice = parse(message)
 
         print(f"RA: {notice.ra} deg")
         print(f"Dec: {notice.dec} deg")
         print(f"Error radius: {notice.error_radius} deg")
-        break
 ```
 
 ### 3. Parse Notices on Disk
