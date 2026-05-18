@@ -3,60 +3,56 @@ from typing import Annotated
 
 from pydantic import BaseModel
 
-from gcnparser.parse_xml import attr
-from gcnparser.parse_xml import group_flag
-from gcnparser.parse_xml import group_param
-from gcnparser.parse_xml import opt_text
-from gcnparser.parse_xml import param
-from gcnparser.parse_xml import parse_utc_datetime
-from gcnparser.parse_xml import parse_voevent_notice
-from gcnparser.parse_xml import root_attr
-from gcnparser.parse_xml import text
+from ..parse_xml import attr
+from ..parse_xml import group_flag
+from ..parse_xml import opt_text
+from ..parse_xml import param
+from ..parse_xml import parse_utc_datetime
+from ..parse_xml import parse_voevent_notice
+from ..parse_xml import root_attr
+from ..parse_xml import text
 
 
-class FermiGBMFinPos(BaseModel):
-    """Parsed Fermi-GBM final position VOEvent notice (packet type 115).
+class FermiLATPos(BaseModel):
+    """Shared model for Fermi-LAT position notices (packet types 120, 121, 122).
 
     Attributes:
         author_contact_name: Contact name of the notice author.
         author_email: Email address of the notice author.
         alert_datetime: UTC datetime when the notice was issued (ISO-8601).
         ivorn: Raw VOEvent IVORN identifying this notice instance.
-        packet_type: GCN packet type number (115 = Fin Pos, 146 = Fin Pos Internal).
+        packet_type: GCN packet type number.
         pkt_ser_num: Serial number for this packet type.
         trig_id: Unique trigger identifier; seconds since 2001-01-01.
-        sequence_num: Record sequence number across all messages for this trigger.
+        record_num: Record sequence number across all messages for this trigger.
         burst_datetime: UTC datetime of the trigger event (ISO-8601).
         burst_tjd: Truncated Julian Day of the trigger (days).
         burst_sod: Seconds of day of the trigger (s).
-        burst_inten: Number of events in the trigger integration window (counts).
-        data_integ: Duration of the trigger integration interval (s).
-        burst_signif: Significance of the burst in the integrated data (sigma).
-        phi: GBM instrument azimuth of the burst (deg).
-        theta: GBM instrument zenith of the burst measured from LAT boresight (deg).
+        burst_inten: Number of events used in the location calculation (counts).
+        cnts_e1: Event counts in the 0--100 MeV energy band (counts).
+        cnts_e2: Event counts in the 100 MeV--1 GeV energy band (counts).
+        cnts_e3: Event counts in the 1--10 GeV energy band (counts).
+        cnts_e4: Event counts in the >10 GeV energy band (counts).
+        integ_time: Integration time between first and last photons used (s).
+        trig_index: Index of the trigger criterion that provided the successful trigger (dn).
+        temp_test_stat: Temporal test statistic (``-log`` probability).
+        image_test_stat: Image test statistic (``-log`` probability).
         ra: Right ascension of the burst position (deg).
         dec: Declination of the burst position (deg).
         error_radius: Radius of the positional error circle (deg).
-        algorithm: Version index of the location algorithm.
-        lo_energy: Lower energy bound of the analysis range (keV).
-        hi_energy: Upper energy bound of the analysis range (keV).
+        all_gammas_used: Whether all gammas were used in the location method.
+        only_gammas_above_used: Whether only gammas above an energy cut were used.
         def_not_a_grb: Whether ground analysis determined this is definitely not a GRB.
-        target_in_blk_catalog: Whether the source is in the blocked-source catalog.
-        human_generated: Whether the position was manually reviewed by a human.
-        robo_generated: Whether the position was generated autonomously.
-        long_short: Classification of the burst duration (``"long"``, ``"short"``, or ``"unknown"``).
         spatial_prox_match: Whether spatial coincidence was found with another event.
         temporal_prox_match: Whether temporal coincidence was found with another event.
-        test_submission: Whether this is an internal test submission.
+        report_request_made: Whether a repoint request was made to the spacecraft.
         values_out_of_range: Whether any coordinate values were out of valid range.
-        flt_generated: Whether the notice originated from flight software.
-        gnd_generated: Whether the notice originated from ground operations.
-        crc_error: Whether a CRC error was detected.
-        lightcurve_url: URL to the quicklook lightcurve GIF.
-        locationmap_url: URL to the location plot PNG.
+        near_bright_star: Whether the position is near a bright star (mag < 6.5).
+        err_circle_in_galaxy: Whether the error circle overlaps the Galactic plane.
+        galaxy_in_err_circle: Whether the Galactic plane lies within the error circle.
         coords_type: Coordinate type code (dn).
         coords_string: Human-readable description of the coordinate type.
-        reference_uri: URL to the Fermi GBM instrument documentation.
+        reference_uri: URL to the Fermi LAT instrument documentation.
         followup: IVORN of the parent notice that this notice updates (if any).
         importance: VOEvent importance rating.
         inference_probability: VOEvent inference probability.
@@ -69,35 +65,32 @@ class FermiGBMFinPos(BaseModel):
     packet_type: int
     pkt_ser_num: int
     trig_id: int
-    sequence_num: int
+    record_num: int
     burst_datetime: Annotated[datetime, "ISO8601"]
     burst_tjd: Annotated[int, "days"]
     burst_sod: Annotated[float, "s"]
     burst_inten: Annotated[int, "counts"]
-    data_integ: Annotated[float, "s"]
-    burst_signif: Annotated[float, "sigma"]
-    phi: Annotated[float, "deg"]
-    theta: Annotated[float, "deg"]
+    cnts_e1: Annotated[int, "counts"]
+    cnts_e2: Annotated[int, "counts"]
+    cnts_e3: Annotated[int, "counts"]
+    cnts_e4: Annotated[int, "counts"]
+    integ_time: Annotated[float, "s"]
+    trig_index: Annotated[int, "dn"]
+    temp_test_stat: Annotated[float, "-log(prob)"]
+    image_test_stat: Annotated[float, "-log(prob)"]
     ra: Annotated[float, "deg"]
     dec: Annotated[float, "deg"]
     error_radius: Annotated[float, "deg"]
-    algorithm: int
-    lo_energy: Annotated[int, "keV"]
-    hi_energy: Annotated[int, "keV"]
+    all_gammas_used: bool
+    only_gammas_above_used: bool
     def_not_a_grb: bool
-    target_in_blk_catalog: bool
-    human_generated: bool
-    robo_generated: bool
-    long_short: str
     spatial_prox_match: bool
     temporal_prox_match: bool
-    test_submission: bool
+    report_request_made: bool
     values_out_of_range: bool
-    flt_generated: bool
-    gnd_generated: bool
-    crc_error: bool
-    lightcurve_url: str
-    locationmap_url: str
+    near_bright_star: bool
+    err_circle_in_galaxy: bool
+    galaxy_in_err_circle: bool
     coords_type: Annotated[int, "dn"]
     coords_string: str
     reference_uri: str
@@ -120,33 +113,30 @@ _WHAT_RULES = {
     "packet_type": lambda r: int(param(r, "Packet_Type")),
     "pkt_ser_num": lambda r: int(param(r, "Pkt_Ser_Num")),
     "trig_id": lambda r: int(param(r, "TrigID")),
-    "sequence_num": lambda r: int(param(r, "Sequence_Num")),
+    "record_num": lambda r: int(param(r, "Record_Num")),
     "burst_tjd": lambda r: int(param(r, "Burst_TJD")),
     "burst_sod": lambda r: float(param(r, "Burst_SOD")),
     "burst_inten": lambda r: int(param(r, "Burst_Inten")),
-    "data_integ": lambda r: float(param(r, "Data_Integ")),
-    "burst_signif": lambda r: float(param(r, "Burst_Signif")),
-    "phi": lambda r: float(param(r, "Phi")),
-    "theta": lambda r: float(param(r, "Theta")),
-    "algorithm": lambda r: int(param(r, "Algorithm")),
-    "lo_energy": lambda r: int(param(r, "Lo_Energy")),
-    "hi_energy": lambda r: int(param(r, "Hi_Energy")),
-    "lightcurve_url": lambda r: param(r, "LightCurve_URL"),
-    "locationmap_url": lambda r: param(r, "LocationMap_URL"),
+    "cnts_e1": lambda r: int(param(r, "Cnts_E1")),
+    "cnts_e2": lambda r: int(param(r, "Cnts_E2")),
+    "cnts_e3": lambda r: int(param(r, "Cnts_E3")),
+    "cnts_e4": lambda r: int(param(r, "Cnts_E4")),
+    "integ_time": lambda r: float(param(r, "Integ_Time")),
+    "trig_index": lambda r: int(param(r, "Trig_Index")),
+    "temp_test_stat": lambda r: float(param(r, "Temp_Test_Stat")),
+    "image_test_stat": lambda r: float(param(r, "Image_Test_Stat")),
     "coords_type": lambda r: int(param(r, "Coords_Type")),
     "coords_string": lambda r: param(r, "Coords_String"),
+    "all_gammas_used": lambda r: group_flag(r, "Trigger_ID", "All_Gammas_Used"),
+    "only_gammas_above_used": lambda r: group_flag(r, "Trigger_ID", "Only_Gammas_Above_Used"),
     "def_not_a_grb": lambda r: group_flag(r, "Trigger_ID", "Def_NOT_a_GRB"),
-    "target_in_blk_catalog": lambda r: group_flag(r, "Trigger_ID", "Target_in_Blk_Catalog"),
-    "human_generated": lambda r: group_flag(r, "Trigger_ID", "Human_generated"),
-    "robo_generated": lambda r: group_flag(r, "Trigger_ID", "Robo_generated"),
-    "long_short": lambda r: group_param(r, "Trigger_ID", "Long_short") or "unknown",
     "spatial_prox_match": lambda r: group_flag(r, "Trigger_ID", "Spatial_Prox_Match"),
     "temporal_prox_match": lambda r: group_flag(r, "Trigger_ID", "Temporal_Prox_Match"),
-    "test_submission": lambda r: group_flag(r, "Trigger_ID", "Test_Submission"),
+    "report_request_made": lambda r: group_flag(r, "Misc_Flags", "Report_Request_Made"),
     "values_out_of_range": lambda r: group_flag(r, "Misc_Flags", "Values_Out_of_Range"),
-    "flt_generated": lambda r: group_flag(r, "Misc_Flags", "Flt_Generated"),
-    "gnd_generated": lambda r: group_flag(r, "Misc_Flags", "Gnd_Generated"),
-    "crc_error": lambda r: group_flag(r, "Misc_Flags", "CRC_Error"),
+    "near_bright_star": lambda r: group_flag(r, "Misc_Flags", "Near_Bright_Star"),
+    "err_circle_in_galaxy": lambda r: group_flag(r, "Misc_Flags", "Err_Circle_in_Galaxy"),
+    "galaxy_in_err_circle": lambda r: group_flag(r, "Misc_Flags", "Galaxy_in_Err_Circle"),
 }
 
 _WHEREWHEN_RULES = {
@@ -174,14 +164,14 @@ _CITATIONS_RULES = {
 }
 
 
-def parse_fermi_gbm_fin_pos(value: bytes) -> FermiGBMFinPos:
-    """Parses a Fermi GBM final position notice.
+def parse_fermi_lat_pos(value: bytes) -> FermiLATPos:
+    """Parses a Fermi-LAT position notice.
 
     Args:
         value: Raw XML bytes of the VOEvent notice.
 
     Returns:
-        Parsed GBM final position notice model.
+        Parsed LAT position notice model.
 
     Raises:
         ParseError: If the XML document cannot be parsed or model validation
@@ -191,8 +181,8 @@ def parse_fermi_gbm_fin_pos(value: bytes) -> FermiGBMFinPos:
     """
     return parse_voevent_notice(
         value,
-        FermiGBMFinPos,
-        "parse_fermi_gbm_fin_pos",
+        FermiLATPos,
+        "parse_fermi_lat_pos",
         {
             "VOEvent": _ROOT_RULES,
             "Who": _WHO_RULES,

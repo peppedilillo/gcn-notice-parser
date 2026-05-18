@@ -3,8 +3,8 @@ from datetime import timezone
 from pathlib import Path
 from xml.etree import ElementTree
 
-from gcnparser.svom import parse_svom_retraction
-from gcnparser.svom import SvomRetraction
+from gcn_parser.svom import parse_svom_retraction
+from gcn_parser.svom import SvomRetraction
 
 FIXTURE_GROUPS = [
     Path("tests/fixtures/svom/eclairs"),

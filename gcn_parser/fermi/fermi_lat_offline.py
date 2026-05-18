@@ -3,14 +3,14 @@ from typing import Annotated
 
 from pydantic import BaseModel
 
-from gcnparser.parse_xml import attr
-from gcnparser.parse_xml import group_flag
-from gcnparser.parse_xml import opt_text
-from gcnparser.parse_xml import param
-from gcnparser.parse_xml import parse_utc_datetime
-from gcnparser.parse_xml import parse_voevent_notice
-from gcnparser.parse_xml import root_attr
-from gcnparser.parse_xml import text
+from ..parse_xml import attr
+from ..parse_xml import group_flag
+from ..parse_xml import opt_text
+from ..parse_xml import param
+from ..parse_xml import parse_utc_datetime
+from ..parse_xml import parse_voevent_notice
+from ..parse_xml import root_attr
+from ..parse_xml import text
 
 
 class FermiLATOffline(BaseModel):

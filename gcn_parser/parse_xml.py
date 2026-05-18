@@ -11,8 +11,8 @@ from xml.etree import ElementTree as ET
 
 from pydantic import ValidationError
 
-from gcnparser.exceptions import FieldParseError
-from gcnparser.exceptions import ParseError
+from .exceptions import FieldParseError
+from .exceptions import ParseError
 
 Rule = Callable[[ET.Element], object]
 SectionRules = dict[str, Rule]

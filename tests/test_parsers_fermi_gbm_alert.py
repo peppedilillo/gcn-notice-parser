@@ -4,8 +4,8 @@ from xml.etree import ElementTree
 
 import pytest
 
-from gcnparser.fermi.fermi_gbm_alert import FermiGBMAlert
-from gcnparser.fermi.fermi_gbm_alert import parse_fermi_gbm_alert
+from gcn_parser.fermi.fermi_gbm_alert import FermiGBMAlert
+from gcn_parser.fermi.fermi_gbm_alert import parse_fermi_gbm_alert
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")

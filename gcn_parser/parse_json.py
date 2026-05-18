@@ -4,7 +4,7 @@ import json
 
 from pydantic import ValidationError
 
-from gcnparser.exceptions import ParseError
+from .exceptions import ParseError
 
 
 def parse_json_notice(value: bytes, model: type, parser_name: str):

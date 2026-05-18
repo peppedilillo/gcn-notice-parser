@@ -4,8 +4,8 @@ from xml.etree import ElementTree
 
 import pytest
 
-from gcnparser.fermi.fermi_lat_pos_diag import FermiLATPosDiag
-from gcnparser.fermi.fermi_lat_pos_diag import parse_fermi_lat_pos_diag
+from gcn_parser.fermi.fermi_lat_pos_diag import FermiLATPosDiag
+from gcn_parser.fermi.fermi_lat_pos_diag import parse_fermi_lat_pos_diag
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")

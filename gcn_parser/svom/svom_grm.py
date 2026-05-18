@@ -3,17 +3,17 @@ from typing import Annotated
 
 from pydantic import BaseModel
 
-from gcnparser.parse_xml import attr
-from gcnparser.parse_xml import group_param
-from gcnparser.parse_xml import opt_group_datetime
-from gcnparser.parse_xml import opt_group_float
-from gcnparser.parse_xml import opt_position_float
-from gcnparser.parse_xml import param
-from gcnparser.parse_xml import parse_utc_datetime
-from gcnparser.parse_xml import parse_voevent_notice
-from gcnparser.parse_xml import root_attr
-from gcnparser.parse_xml import text
-from gcnparser.svom import SvomPacket
+from ..parse_xml import attr
+from ..parse_xml import group_param
+from ..parse_xml import opt_group_datetime
+from ..parse_xml import opt_group_float
+from ..parse_xml import opt_position_float
+from ..parse_xml import param
+from ..parse_xml import parse_utc_datetime
+from ..parse_xml import parse_voevent_notice
+from ..parse_xml import root_attr
+from ..parse_xml import text
+from ..svom import SvomPacket
 
 
 class SvomGrm(BaseModel):

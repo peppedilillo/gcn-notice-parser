@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from gcnparser.parse_json import parse_json_notice
+from ..parse_json import parse_json_notice
 
 
 class EinsteinProbeWXT(BaseModel):

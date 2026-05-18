@@ -5,10 +5,10 @@ from xml.etree import ElementTree
 
 import pytest
 
-from gcnparser.exceptions import ParseError
-from gcnparser.svom import parse_svom_eclairs
-from gcnparser.svom import SvomEclairs
-from gcnparser.svom import SvomPacket
+from gcn_parser.exceptions import ParseError
+from gcn_parser.svom import parse_svom_eclairs
+from gcn_parser.svom import SvomEclairs
+from gcn_parser.svom import SvomPacket
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/eclairs")

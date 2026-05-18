@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from gcnparser.ep import EinsteinProbeWXT
-from gcnparser.ep import parse_einstein_probe_wxt
+from gcn_parser.ep import EinsteinProbeWXT
+from gcn_parser.ep import parse_einstein_probe_wxt
 
 FIXTURES = Path("tests/fixtures/ep/alert")
 

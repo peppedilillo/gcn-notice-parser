@@ -2,6 +2,8 @@ from enum import Enum
 
 
 class Topic(str, Enum):
+    """GCN Kafka topics for which parsing is supported."""
+
     FERMI_GBM_ALERT: str = "gcn.classic.voevent.FERMI_GBM_ALERT"
     FERMI_GBM_FIN_POS: str = "gcn.classic.voevent.FERMI_GBM_FIN_POS"
     FERMI_GBM_FLT_POS: str = "gcn.classic.voevent.FERMI_GBM_FLT_POS"

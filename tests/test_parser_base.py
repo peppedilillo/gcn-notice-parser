@@ -3,15 +3,15 @@ from pathlib import Path
 from pydantic import BaseModel
 import pytest
 
-from gcnparser.ep.wxt import parse_einstein_probe_wxt
-from gcnparser.exceptions import FieldParseError
-from gcnparser.exceptions import ParseError
-from gcnparser.fermi.fermi_gbm_alert import parse_fermi_gbm_alert
-from gcnparser.fermi.fermi_lat_pos_ini import parse_fermi_lat_pos_ini
-from gcnparser.parse_json import parse_json_notice
-from gcnparser.parse_xml import param as _param
-from gcnparser.parse_xml import parse_voevent_notice
-from gcnparser.parse_xml import parse_voevent_root
+from gcn_parser.ep.wxt import parse_einstein_probe_wxt
+from gcn_parser.exceptions import FieldParseError
+from gcn_parser.exceptions import ParseError
+from gcn_parser.fermi.fermi_gbm_alert import parse_fermi_gbm_alert
+from gcn_parser.fermi.fermi_lat_pos_ini import parse_fermi_lat_pos_ini
+from gcn_parser.parse_json import parse_json_notice
+from gcn_parser.parse_xml import param as _param
+from gcn_parser.parse_xml import parse_voevent_notice
+from gcn_parser.parse_xml import parse_voevent_root
 
 FIXTURES = Path("tests/fixtures/fermi")
 EP_FIXTURES = Path("tests/fixtures/ep")

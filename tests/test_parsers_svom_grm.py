@@ -5,8 +5,8 @@ from xml.etree import ElementTree
 
 import pytest
 
-from gcnparser.svom import parse_svom_grm_trigger
-from gcnparser.svom import SvomGrm
+from gcn_parser.svom import parse_svom_grm_trigger
+from gcn_parser.svom import SvomGrm
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/grm")

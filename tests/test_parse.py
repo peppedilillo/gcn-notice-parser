@@ -1,22 +1,27 @@
-from dataclasses import dataclass
 from pathlib import Path
 
 import pytest
 
-from gcnparser.ep import EinsteinProbeWXT
-from gcnparser.exceptions import ParseError
-from gcnparser.exceptions import UnsupportedTopicError
-from gcnparser.parse import parse
-from gcnparser.svom import is_svom_retraction
-from gcnparser.svom import SvomEclairs
-from gcnparser.svom import SvomRetraction
-from gcnparser.topics import Topic
+from gcn_parser.ep import EinsteinProbeWXT
+from gcn_parser.exceptions import ParseError
+from gcn_parser.exceptions import UnsupportedTopicError
+from gcn_parser.parse import parse
+from gcn_parser.svom import is_svom_retraction
+from gcn_parser.svom import SvomEclairs
+from gcn_parser.svom import SvomRetraction
+from gcn_parser.topics import Topic
 
 
-@dataclass
 class Message:
-    topic: Topic | str
-    value: bytes
+    def __init__(self, topic: Topic | str, value: bytes) -> None:
+        self._topic = topic
+        self._value = value
+
+    def topic(self) -> Topic | str:
+        return self._topic
+
+    def value(self) -> bytes:
+        return self._value
 
 
 def test_is_svom_retraction_true_for_retraction_fixture():
