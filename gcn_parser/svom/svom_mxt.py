@@ -1,3 +1,5 @@
+"""Parser for SVOM MXT notices."""
+
 from datetime import datetime
 from typing import Annotated
 

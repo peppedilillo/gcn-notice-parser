@@ -1,3 +1,5 @@
+"""High-level parser dispatch for GCN Kafka messages."""
+
 from typing import Protocol
 
 from .ep import EinsteinProbeWXT
@@ -32,7 +34,7 @@ from .topics import Topic
 
 
 class Message(Protocol):
-    """A dummy for a confluent_kafka Message type."""
+    """Kafka-style message protocol accepted by :func:`parse`."""
 
     def topic(self) -> str: ...
     def value(self) -> bytes: ...
@@ -56,6 +58,23 @@ Notice = (
 
 
 def parse(msg: Message) -> Notice:
+    """Parse a supported GCN Kafka message.
+
+    Args:
+        msg: Kafka-style message object with ``topic()`` and ``value()``
+            methods. ``topic()`` must return the GCN topic string, and
+            ``value()`` must return the raw notice bytes.
+
+    Returns:
+        Parsed notice model for the message topic.
+
+    Raises:
+        UnsupportedTopicError: If the message topic is not supported.
+        ParseError: If the topic-specific parser cannot parse or validate the
+            message payload.
+        FieldParseError: If a topic-specific parser cannot extract a required
+            field from the message payload.
+    """
     match msg.topic():
         case Topic.FERMI_GBM_ALERT:
             return parse_fermi_gbm_alert(msg.value())

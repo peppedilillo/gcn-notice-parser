@@ -1,3 +1,5 @@
+"""Parser for Fermi GBM flight-position notices."""
+
 from datetime import datetime
 from enum import IntEnum
 from typing import Annotated
@@ -15,6 +17,8 @@ from ..parse_xml import text
 
 
 class LikelySource(IntEnum):
+    """Fermi GBM source-class identifiers."""
+
     ERROR = 0
     UNRELIABLE_LOCATION = 1
     LOCAL_PARTICLES = 2

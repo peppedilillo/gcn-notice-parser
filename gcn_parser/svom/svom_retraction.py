@@ -1,3 +1,5 @@
+"""Parser for generic SVOM retraction notices."""
+
 from datetime import datetime
 from typing import Annotated
 
@@ -129,10 +131,10 @@ def is_svom_retraction(value: bytes) -> bool:
     """Checks whether the notice is a SVOM retraction.
 
     Args:
-        value: Raw XML bytest of the VOEvent notice.
+        value: Raw XML bytes of the VOEvent notice.
 
     Returns:
-        True if the the notice is a SVOM retraction.
+        True if the notice is a SVOM retraction.
     """
     root = parse_voevent_root(value, "is_svom_retraction")
     return int(param(root, "Packet_Type")) == SvomPacket.RETRACTION

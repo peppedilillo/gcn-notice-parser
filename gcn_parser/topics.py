@@ -1,3 +1,5 @@
+"""Supported GCN Kafka topic identifiers."""
+
 from enum import StrEnum
 
 

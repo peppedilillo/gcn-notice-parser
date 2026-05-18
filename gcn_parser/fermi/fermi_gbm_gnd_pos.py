@@ -1,3 +1,5 @@
+"""Parser for Fermi GBM ground-position notices."""
+
 from datetime import datetime
 from typing import Annotated
 

@@ -46,10 +46,10 @@ while True:
         print(notice)
 ```
 
-### 2. Parse One Topic
+### 2. Parse Selected Topics
 
-Subscribe to a single topic when you know which notice family you want.
-This example waits for one Fermi GBM final-position notice and prints the burst position.
+Subscribe to selected topics when you know which notice family you want.
+This example waits for one Fermi GBM final-position or ground-position notice and prints the burst position.
 
 ```python
 from gcn_kafka import Consumer
@@ -65,7 +65,7 @@ consumer = Consumer(
     client_secret="...",
     config={"auto.offset.reset": "earliest"},
 )
-consumer.subscribe([Topic.FERMI_GBM_FIN_POS])
+consumer.subscribe([Topic.FERMI_GBM_FIN_POS, Topic.FERMI_GBM_GND_POS])
 
 while True:
     for message in consumer.consume(timeout=1):
@@ -81,7 +81,7 @@ while True:
         break
 ```
 
-### 3. Parse A Notice On Disk
+### 3. Parse Notices on Disk
 
 Use a mission-specific parser when you already know the notice type and have the raw notice stored on disk.
 

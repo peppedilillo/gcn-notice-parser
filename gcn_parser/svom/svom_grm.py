@@ -1,3 +1,5 @@
+"""Parser for SVOM GRM trigger notices."""
+
 from datetime import datetime
 from typing import Annotated
 

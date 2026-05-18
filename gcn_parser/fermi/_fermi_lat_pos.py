@@ -1,3 +1,5 @@
+"""Shared parser implementation for Fermi LAT position notices."""
+
 from datetime import datetime
 from typing import Annotated
 

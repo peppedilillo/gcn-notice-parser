@@ -1,3 +1,5 @@
+"""Parser for SVOM ECLAIRs notices."""
+
 from datetime import datetime
 from typing import Annotated
 
