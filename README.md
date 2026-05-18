@@ -49,7 +49,7 @@ while True:
 ### 2. Parse Selected Topics
 
 Subscribe to selected topics when you know which notice family you want.
-This example waits for one Fermi GBM final-position or ground-position notice and prints the burst position.
+This example listens for Fermi GBM final-position and ground-position notices and prints the burst position.
 
 ```python
 from gcn_kafka import Consumer
