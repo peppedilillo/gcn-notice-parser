@@ -54,7 +54,6 @@ This example waits for one Fermi GBM final-position or ground-position notice an
 ```python
 from gcn_kafka import Consumer
 
-from gcn_parser import ParseError
 from gcn_parser import Topic
 from gcn_parser import parse
 
