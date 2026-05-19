@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://peppedilillo.github.io/gcn-parser/</loc>
+         <loc>https://peppedilillo.github.io/gcn-notice-parser/</loc>
          <lastmod>2026-05-19</lastmod>
     </url>
     <url>
-         <loc>https://peppedilillo.github.io/gcn-parser/api/</loc>
+         <loc>https://peppedilillo.github.io/gcn-notice-parser/api/</loc>
          <lastmod>2026-05-19</lastmod>
     </url>
     <url>
-         <loc>https://peppedilillo.github.io/gcn-parser/development/</loc>
+         <loc>https://peppedilillo.github.io/gcn-notice-parser/development/</loc>
          <lastmod>2026-05-19</lastmod>
     </url>
     <url>
-         <loc>https://peppedilillo.github.io/gcn-parser/usage/</loc>
+         <loc>https://peppedilillo.github.io/gcn-notice-parser/usage/</loc>
          <lastmod>2026-05-19</lastmod>
     </url>
     <url>
-         <loc>https://peppedilillo.github.io/gcn-parser/api/einstein-probe/</loc>
+         <loc>https://peppedilillo.github.io/gcn-notice-parser/api/einstein-probe/</loc>
          <lastmod>2026-05-19</lastmod>
     </url>
     <url>
-         <loc>https://peppedilillo.github.io/gcn-parser/api/fermi/</loc>
+         <loc>https://peppedilillo.github.io/gcn-notice-parser/api/fermi/</loc>
          <lastmod>2026-05-19</lastmod>
     </url>
     <url>
-         <loc>https://peppedilillo.github.io/gcn-parser/api/svom/</loc>
+         <loc>https://peppedilillo.github.io/gcn-notice-parser/api/svom/</loc>
          <lastmod>2026-05-19</lastmod>
     </url>
 </urlset>
