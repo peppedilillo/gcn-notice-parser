@@ -72,6 +72,7 @@ class SvomGrm(BaseModel):
             GRDs trigger.
         description: Description of the notice.
         reference_uri: URL to the GRM instrument description.
+
     """
 
     author_contact_name: str
@@ -167,7 +168,7 @@ _HOW_RULES = {
 
 
 def parse_svom_grm_trigger(value: bytes) -> SvomGrm:
-    """Parses an SVOM GRM trigger notice.
+    """Parses an SVOM GRM trigger notice from bytes.
 
     Args:
         value: Raw XML bytes of the VOEvent notice.

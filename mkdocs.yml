@@ -1,0 +1,67 @@
+site_name: gcn-parser docs
+site_url: https://peppedilillo.github.io/gcn-parser/
+theme:
+  name: material
+  font:
+    text: Roboto
+    code: Roboto Mono
+  palette:
+    - scheme: default
+      primary: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: slate
+      primary: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+watch:
+  - README.md
+  - gcn_parser/
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: True
+            show_root_heading: true
+            show_root_full_path: false
+            heading_level: 3
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+nav:
+  - Home: index.md
+  - Usage Guide: usage.md
+  - API Reference:
+      - Core: api.md
+      - Fermi: api/fermi.md
+      - SVOM: api/svom.md
+      - Einstein Probe: api/einstein-probe.md
+  - Developer guide: development.md
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/peppedilillo/gcn-parser
+      name: gcn-parser on GitHub
+    - icon: fontawesome/solid/envelope
+      link: mailto:giuseppe.dilillo@inaf.it
+      name: Contact via email
+    - icon: fontawesome/brands/creative-commons
+      link: https://github.com/peppedilillo/gcn-parser/blob/main/LICENSE
+      name: MIT License
+
+copyright: Made by <a href="https://gdilillo.com" target="_blank" rel="noopener">Giuseppe Dilillo</a> </br>with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs Insiders</a>.

@@ -43,4 +43,6 @@ dev = [
     "isort>=8.0.1",
     "pre-commit>=4.6.0",
     "pytest>=9.0.3",
+    "mkdocs-material>=9.7.6",
+    "mkdocstrings[python]>=1.0.4",
 ]

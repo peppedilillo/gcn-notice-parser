@@ -25,6 +25,48 @@ class SvomMxt(BaseModel):
 
     Covers both packet-209 initial notices and packet-210 update notices.
     The raw VOEvent identity is preserved in ``ivorn``.
+
+    Attributes:
+        author_contact_name: Contact name of the notice author.
+        author_email: Email address of the notice author.
+        alert_datetime: UTC datetime when the notice was issued (ISO-8601).
+        ivorn: Raw VOEvent IVORN identifying this notice instance.
+        packet_type: MXT notice type identifier: 209 for the first detection,
+            210 when the detection quality factor improves.
+        pkt_ser_num: Serial number for this packet type.
+        instrument: Instrument involved (``"MXT"``).
+        notice_level: SVOM notice level (``"N2m"``).
+        burst_id: Identifier of the alert sequence (``sbYYMMDDnn``).
+        alert_seq_t0: Time of the alert sequence T0 (ISO-8601). ``None``
+            when absent from the notice.
+        snr: Signal-to-noise ratio of the MXT detection (sigma), saturating
+            at 255.
+        mean_flux: Mean flux of the detected source (erg.cm^-2.s^-1).
+        flux_error: Mean flux error of the detection (erg.cm^-2.s^-1).
+        within_eclairs_r90: Whether the MXT source is compatible with the
+            ECLAIRs R90 localisation.
+        eclairs_angle: Angular distance between the MXT and ECLAIRs
+            localisations (arcmin).
+        galactic_lon: Galactic longitude of the target (deg).
+        galactic_lat: Galactic latitude of the target (deg).
+        moon_angle: Angular distance between the target and the Moon (deg).
+        sun_angle: Angular distance between the target and the Sun (deg).
+        use_vt_attitude: Whether the platform is in high-stability mode using
+            VT attitude instead of the platform star tracker.
+        attitude_ra: Platform attitude Right Ascension (deg).
+        attitude_dec: Platform attitude Declination (deg).
+        attitude_roll: Platform attitude Roll angle (deg).
+        sat_longitude: Satellite geodetic longitude (deg).
+        sat_latitude: Satellite geodetic latitude (deg).
+        sat_altitude: Satellite altitude (km).
+        burst_datetime: UTC time of the MXT detection event (ISO-8601).
+        ra: Right Ascension of the MXT localisation (deg).
+        dec: Declination of the MXT localisation (deg).
+        error_radius: R90 uncertainty radius of the MXT localisation (deg).
+        description: Description of the notice.
+        reference_uri: URL to the MXT instrument description.
+        followups: IVORNs of previously published notices for the same event.
+
     """
 
     author_contact_name: str
@@ -123,7 +165,7 @@ _CITATIONS_RULES = {
 
 
 def parse_svom_mxt(value: bytes) -> SvomMxt:
-    """Parses an SVOM MXT notice.
+    """Parses an SVOM MXT notice from bytes.
 
     Args:
         value: Raw XML bytes of the VOEvent notice.

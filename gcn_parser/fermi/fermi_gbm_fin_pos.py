@@ -17,7 +17,7 @@ from ..parse_xml import text
 
 
 class FermiGBMFinPos(BaseModel):
-    """Parsed Fermi-GBM final position VOEvent notice (packet type 115).
+    """Parsed Fermi-GBM final position VOEvent notice from bytes.
 
     Attributes:
         author_contact_name: Contact name of the notice author.
@@ -62,6 +62,7 @@ class FermiGBMFinPos(BaseModel):
         followup: IVORN of the parent notice that this notice updates (if any).
         importance: VOEvent importance rating.
         inference_probability: VOEvent inference probability.
+
     """
 
     author_contact_name: str

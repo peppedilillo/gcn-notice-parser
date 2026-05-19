@@ -61,6 +61,7 @@ class FermiGBMAlert(BaseModel):
         crc_error: Whether a CRC error was detected.
         reference_uri: URL to the Fermi GBM instrument documentation.
         followup: IVORN of the parent notice that this notice updates (unlikely any).
+
     """
 
     author_contact_name: str
@@ -192,7 +193,7 @@ _CITATIONS_RULES = {
 
 
 def parse_fermi_gbm_alert(value: bytes) -> FermiGBMAlert:
-    """Parses a Fermi GBM alert from bytes.
+    """Parses a Fermi GBM alert notice from bytes.
 
     Args:
         value: Raw XML bytes of the VOEvent notice.

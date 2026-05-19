@@ -26,6 +26,7 @@ class SvomRetraction(BaseModel):
 
     Retractions are modeled as their own document shape and preserve the raw
     cited IVORNs in ``retractions``.
+
     """
 
     author_contact_name: str
@@ -141,7 +142,7 @@ def is_svom_retraction(value: bytes) -> bool:
 
 
 def parse_svom_retraction(value: bytes) -> SvomRetraction:
-    """Parses a generic SVOM retraction notice.
+    """Parses a generic SVOM retraction notice from bytes.
 
     Args:
         value: Raw XML bytes of the VOEvent notice.

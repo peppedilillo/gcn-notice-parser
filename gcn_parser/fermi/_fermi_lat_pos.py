@@ -16,7 +16,7 @@ from ..parse_xml import text
 
 
 class FermiLATPos(BaseModel):
-    """Shared model for Fermi-LAT position notices (packet types 120, 121, 122).
+    """Shared model for Fermi-LAT position notices.
 
     Attributes:
         author_contact_name: Contact name of the notice author.
@@ -58,6 +58,7 @@ class FermiLATPos(BaseModel):
         followup: IVORN of the parent notice that this notice updates (if any).
         importance: VOEvent importance rating.
         inference_probability: VOEvent inference probability.
+
     """
 
     author_contact_name: str
@@ -167,7 +168,7 @@ _CITATIONS_RULES = {
 
 
 def parse_fermi_lat_pos(value: bytes) -> FermiLATPos:
-    """Parses a Fermi-LAT position notice.
+    """Parses a Fermi-LAT position notice from bytes.
 
     Args:
         value: Raw XML bytes of the VOEvent notice.

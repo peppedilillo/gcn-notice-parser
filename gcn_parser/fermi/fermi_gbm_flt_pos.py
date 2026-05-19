@@ -36,7 +36,7 @@ class LikelySource(IntEnum):
 
 
 class FermiGBMFltPos(BaseModel):
-    """Parsed Fermi-GBM flight position VOEvent notice (packet type 111).
+    """Parsed Fermi-GBM flight position VOEvent notice from bytes.
 
     Attributes:
         author_contact_name: Contact name of the notice author.
@@ -83,6 +83,7 @@ class FermiGBMFltPos(BaseModel):
         followup: IVORN of the parent notice that this notice updates (if any).
         importance: VOEvent importance rating.
         inference_probability: VOEvent inference probability.
+
     """
 
     author_contact_name: str

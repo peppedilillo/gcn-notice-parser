@@ -12,6 +12,9 @@ wheels/
 # OS files
 .DS_Store
 
+# docs
+site/
+
 # IDE & LLM
 .idea
 AGENTS.md

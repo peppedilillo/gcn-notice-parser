@@ -16,7 +16,7 @@ from ..parse_xml import text
 
 
 class FermiLATOffline(BaseModel):
-    """Parsed Fermi-LAT offline position VOEvent notice (packet type 128).
+    """Parsed Fermi-LAT offline position VOEvent notice from bytes.
 
     Attributes:
         author_contact_name: Contact name of the notice author.
@@ -51,6 +51,7 @@ class FermiLATOffline(BaseModel):
         followup: IVORN of the parent notice that this notice updates (if any).
         importance: VOEvent importance rating.
         inference_probability: VOEvent inference probability.
+
     """
 
     author_contact_name: str

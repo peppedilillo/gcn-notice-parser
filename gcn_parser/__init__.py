@@ -9,4 +9,15 @@ from .exceptions import UnsupportedTopicError
 from .parse import parse
 from .parse import Topic
 
-SUPPORTED_TOPICS: list[Topic] = [t for t in Topic]
+
+def supported_topics() -> list[Topic]:
+    """Return a list of GCN Kafka topics supported by `gcn-parser`.
+
+    Returns:
+        List of supported topic enum members. The returned list can be passed
+            directly to Kafka consumers that accept string-like topic values.
+    """
+    return list(Topic)
+
+
+SUPPORTED_TOPICS: list[Topic] = supported_topics()

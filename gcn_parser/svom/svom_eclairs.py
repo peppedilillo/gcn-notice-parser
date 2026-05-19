@@ -68,6 +68,7 @@ class SvomEclairs(BaseModel):
         source_name: Name of the source in the ECLAIRs on-board catalogue.
             ``None`` for non-catalog notices.
         followups: IVORNs of previously published notices for the same event.
+
     """
 
     author_contact_name: str
@@ -174,7 +175,7 @@ _CITATIONS_RULES = {
 
 
 def parse_svom_eclairs(value: bytes) -> SvomEclairs:
-    """Parses an SVOM ECLAIRs VOEvent notice.
+    """Parses an SVOM ECLAIRs VOEvent notice from bytes.
 
     Args:
         value: Raw XML bytes of the VOEvent notice.

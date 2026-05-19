@@ -14,16 +14,16 @@ Live Kafka examples also need `gcn-kafka`:
 pip install gcn-parser gcn-kafka
 ```
 
-## Examples
+## Quickstart
 
-### 1. Parse Live GCN Messages
+### Parse Live GCN Messages
 
 ```python
 from gcn_kafka import Consumer
 
 from gcn_parser import ParseError
-from gcn_parser import SUPPORTED_TOPICS
 from gcn_parser import parse
+from gcn_parser import supported_topics
 
 
 consumer = Consumer(
@@ -32,7 +32,7 @@ consumer = Consumer(
     client_secret="...",
     config={"auto.offset.reset": "earliest"},
 )
-consumer.subscribe(SUPPORTED_TOPICS)
+consumer.subscribe(supported_topics())
 
 while True:
     for message in consumer.consume(timeout=1):
@@ -46,7 +46,7 @@ while True:
         print(notice)
 ```
 
-### 2. Parse Selected Topics
+### Parse Selected Topics
 
 Subscribe to selected topics when you know which notice family you want.
 This example listens for Fermi GBM final-position and ground-position notices and prints the burst position.
@@ -75,7 +75,7 @@ while True:
         print(f"Error radius: {notice.error_radius} deg")
 ```
 
-### 3. Parse Notices on Disk
+### Parse Notices on Disk
 
 Use a mission-specific parser when you already know the notice type and have the raw notice stored on disk.
 
@@ -98,7 +98,7 @@ Parsed notices are Pydantic models. Access fields directly, or inspect the full 
 notice.model_dump()
 ```
 
-## Supported Topics
+### Supported Topics
 
 Currently supported GCN topics are:
 
@@ -117,32 +117,9 @@ gcn.notices.svom.voevent.mxt
 gcn.notices.einstein_probe.wxt.alert
 ```
 
-Swift is not operational at the moment, support will be added as soon as it gets back to operations (🤞) .
-More will come eventually.
+Swift is not operational at the moment, support will be added as soon as it gets back to operations (🤞).
+In need of a specific parser? Consider sending a PR, or asking in the [discussion](https://github.com/peppedilillo/gcn-parser/discussions) section.
 
-`SUPPORTED_TOPICS` is a list of all supported topics and can be passed directly to `Consumer.subscribe()`.
+## Documentation
 
-```python
-from gcn_parser import SUPPORTED_TOPICS
-from gcn_parser import Topic
-
-print(Topic.FERMI_GBM_FIN_POS)
-print(SUPPORTED_TOPICS)
-```
-
-## Development
-
-Run tests:
-
-```shell
-uv run pytest -q
-```
-
-Collect fixtures for testing:
-
-```shell
-cp .secrets.sample .secrets
-vim .secrets  # fill GCN credentials
-source .secrets
-uv run tests/fixtures/collect_fixtures.py --help
-```
+Looking for parse notices schema? For this and more, check out the [documentation](https://peppedilillo.github.io/gcn-parser/).

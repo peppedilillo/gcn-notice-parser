@@ -58,7 +58,7 @@ Notice = (
 
 
 def parse(msg: Message) -> Notice:
-    """Parse a supported GCN Kafka message.
+    """Parse a GCN Kafka message from a supported topic.
 
     Args:
         msg: Kafka-style message object with ``topic()`` and ``value()``
