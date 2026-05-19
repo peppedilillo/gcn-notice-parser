@@ -27,6 +27,61 @@ class SvomRetraction(BaseModel):
     Retractions are modeled as their own document shape and preserve the raw
     cited IVORNs in ``retractions``.
 
+    Attributes:
+        author_contact_name: Contact name of the notice author.
+        author_email: Email address of the notice author.
+        alert_datetime: UTC datetime when the retraction notice was issued
+            (ISO-8601).
+        ivorn: Raw VOEvent IVORN identifying this retraction notice instance.
+        packet_type: SVOM retraction notice type identifier (219).
+        pkt_ser_num: Serial number for this packet type.
+        instrument: Instrument associated with the retracted alert sequence.
+        notice_level: SVOM notice level for the retraction.
+        burst_id: Identifier of the alert sequence (``sbYYMMDDnn``).
+        alert_seq_t0: Time of the alert sequence T0 (ISO-8601). ``None``
+            when absent from the notice.
+        snr: Signal-to-noise ratio of the original detection (sigma).
+        timescale: Time window in which the original burst was detected (s).
+        time_window_start: Start time of the original detection time window
+            (ISO-8601).
+        time_window_end: End time of the original detection time window
+            (ISO-8601).
+        lower_energy_bound: Lower energy bound of the original detection
+            range (keV).
+        upper_energy_bound: Upper energy bound of the original detection
+            range (keV).
+        trigger_type: Type of original ECLAIRs trigger, when present.
+        galactic_lon: Galactic longitude of the retracted target (deg).
+            ``None`` when absent from the notice.
+        galactic_lat: Galactic latitude of the retracted target (deg).
+            ``None`` when absent from the notice.
+        moon_angle: Angular distance between the target and the Moon (deg).
+            ``None`` when absent from the notice.
+        sun_angle: Angular distance between the target and the Sun (deg).
+            ``None`` when absent from the notice.
+        slew_status: Slew status of the SVOM platform, when present.
+        attitude_ra: Platform attitude Right Ascension (deg).
+        attitude_dec: Platform attitude Declination (deg).
+        attitude_roll: Platform attitude Roll angle (deg).
+        sat_longitude: Satellite geodetic longitude (deg). ``None`` when
+            absent from the notice.
+        sat_latitude: Satellite geodetic latitude (deg). ``None`` when absent
+            from the notice.
+        sat_altitude: Satellite altitude (km). ``None`` when absent from the
+            notice.
+        burst_datetime: UTC time of the original trigger event (ISO-8601).
+        ra: Right Ascension of the retracted localisation (deg). ``None``
+            when no localisation is provided.
+        dec: Declination of the retracted localisation (deg). ``None`` when
+            no localisation is provided.
+        error_radius: R90 uncertainty radius of the retracted localisation
+            (deg). ``None`` when no localisation is provided.
+        description: Human-readable reason for the retraction.
+        reference_uri: URL to the instrument description. ``None`` when the
+            retraction notice does not include a reference.
+        retractions: IVORNs of previously published notices retracted by this
+            notice.
+
     """
 
     author_contact_name: str

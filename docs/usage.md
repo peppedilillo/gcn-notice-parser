@@ -7,13 +7,22 @@ provide `topic()` and `value()` methods.
 
 ```python
 from gcn_parser import ParseError
+from gcn_parser import UnsupportedTopicError
 from gcn_parser import parse
 
-try:
-    # message is a kafka `Message` instance, or exposes `.value()` and `.topic()` methods
-    notice = parse(message)
-except ParseError as exc:
-    print(f"Failed to parse {message.topic()}: {exc}")
+for message in consumer.consume(timeout=1):
+    if message.error():
+        print(message.error())
+        continue
+
+    try:
+        # message is a Kafka Message instance, or has topic() and value() methods
+        notice = parse(message)
+    except (ParseError, UnsupportedTopicError) as exc:
+        print(f"Skipping {message.topic()}: {exc}")
+        continue
+
+    print(notice.model_dump())
 ```
 
 ## Raw Notice Bytes
@@ -31,10 +40,9 @@ notice = parse_fermi_gbm_fin_pos(Path("fermi_gbm_fin_pos.xml").read_bytes())
 ```
 
 ```python
-from pathlib import Path
 from gcn_parser.fermi import parse_fermi_gbm_fin_pos
 
-# parse a Kafka message payload 
+# parse a Kafka message payload
 notice = parse_fermi_gbm_fin_pos(message.value())
 ```
 
@@ -70,10 +78,10 @@ from gcn_parser import parse
 
 try:
     notice = parse(message)
-except UnsupportedTopicError:
-    print(f"Unsupported topic: {message.topic()}")
 except FieldParseError as exc:
     print(f"Missing or invalid field: {exc}")
+except UnsupportedTopicError as exc:
+    print(f"Unsupported topic: {exc}")
 except ParseError as exc:
     print(f"Malformed notice payload: {exc}")
 ```
