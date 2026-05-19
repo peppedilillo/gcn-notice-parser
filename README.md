@@ -1,17 +1,17 @@
-# GCN Parsers
+# GCN Notice Parser
 
-`gcn-parser` is a Python 3.11+ package for parsing GCN Kafka messages or raw notice bytes into Pydantic models with named, typed fields.
+`gcn-notice-parser` is a Python 3.11+ package for parsing GCN Kafka messages or raw notice bytes into Pydantic models with named, typed fields.
 
 ## Installation
 
 ```shell
-pip install gcn-parser
+pip install gcn-notice-parser
 ```
 
 Live Kafka examples also need `gcn-kafka`:
 
 ```shell
-pip install gcn-parser gcn-kafka
+pip install gcn-notice-parser gcn-kafka
 ```
 
 ## Quickstart
@@ -118,8 +118,8 @@ gcn.notices.einstein_probe.wxt.alert
 ```
 
 Swift is not operational at the moment, support will be added as soon as it gets back to operations (🤞).
-In need of a specific parser? Consider sending a PR, or asking in the [discussion](https://github.com/peppedilillo/gcn-parser/discussions) section.
+In need of a specific parser? Consider sending a PR, or asking in the [discussion](https://github.com/peppedilillo/gcn-notice-parser/discussions) section.
 
 ## Documentation
 
-Looking for parse notices schema? For this and more, check out the [documentation](https://peppedilillo.github.io/gcn-parser/).
+Looking for parse notices schema? For this and more, check out the [documentation](https://peppedilillo.github.io/gcn-notice-parser/).

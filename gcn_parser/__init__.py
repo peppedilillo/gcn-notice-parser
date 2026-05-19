@@ -11,7 +11,7 @@ from .parse import Topic
 
 
 def supported_topics() -> list[Topic]:
-    """Return a list of GCN Kafka topics supported by `gcn-parser`.
+    """Return a list of GCN Kafka supported topics.
 
     Returns:
         List of supported topic enum members. The returned list can be passed

@@ -258,7 +258,7 @@ wheels = [
 ]
 
 [[package]]
-name = "gcn-parser"
+name = "gcn-notice-parser"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

@@ -5,8 +5,8 @@
 Clone the repository and install the development dependencies.
 
 ```bash
-git clone https://github.com/peppedilillo/gcn-parser.git
-cd gcn-parser
+git clone https://github.com/peppedilillo/gcn-notice-parser.git
+cd gcn-notice-parser
 uv sync --group dev
 ```
 

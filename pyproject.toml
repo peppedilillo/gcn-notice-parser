@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "gcn-parser"
+name = "gcn-notice-parser"
 version = "0.1.0"
 description = "Parsers for the NASA GCN notices."
 keywords = ["astrophysics", "astronomy", "ssdc"]
@@ -29,8 +29,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/peppedilillo/gcn-parser"
-Issues = "https://github.com/peppedilillo/gcn-parser/issues"
+Repository = "https://github.com/peppedilillo/gcn-notice-parser"
+Issues = "https://github.com/peppedilillo/gcn-notice-parser/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["gcn_parser"]

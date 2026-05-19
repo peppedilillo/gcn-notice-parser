@@ -1,5 +1,5 @@
-site_name: gcn-parser docs
-site_url: https://peppedilillo.github.io/gcn-parser/
+site_name: gcn-notice-parser docs
+site_url: https://peppedilillo.github.io/gcn-notice-parser/
 theme:
   name: material
   font:
@@ -55,13 +55,13 @@ extra:
   generator: false
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/peppedilillo/gcn-parser
-      name: gcn-parser on GitHub
+      link: https://github.com/peppedilillo/gcn-notice-parser
+      name: gcn-notice-parser on GitHub
     - icon: fontawesome/solid/envelope
       link: mailto:giuseppe.dilillo@inaf.it
       name: Contact via email
     - icon: fontawesome/brands/creative-commons
-      link: https://github.com/peppedilillo/gcn-parser/blob/main/LICENSE
+      link: https://github.com/peppedilillo/gcn-notice-parser/blob/main/LICENSE
       name: MIT License
 
 copyright: Made by <a href="https://gdilillo.com" target="_blank" rel="noopener">Giuseppe Dilillo</a> </br>with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs Insiders</a>.

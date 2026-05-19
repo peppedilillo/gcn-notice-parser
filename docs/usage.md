@@ -49,7 +49,7 @@ notice = parse_fermi_gbm_fin_pos(message.value())
 ## Topics
 
 Use `supported_topics()` to subscribe to every topic currently supported by
-`gcn-parser`, or to check a list of supported topics.
+`gcn-notice-parser`, or to check a list of supported topics.
 
 ```python
 from gcn_parser import supported_topics
