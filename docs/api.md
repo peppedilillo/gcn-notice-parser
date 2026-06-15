@@ -8,6 +8,7 @@
 ## Classes
 
 ::: gcn_parser.Topic
+::: gcn_parser.Notice
 
 ## Exceptions
 

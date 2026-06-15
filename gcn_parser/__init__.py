@@ -8,6 +8,7 @@ from .exceptions import ParseError
 from .exceptions import UnsupportedTopicError
 from .parse import parse
 from .parse import Topic
+from .parse import Notice
 
 
 def supported_topics() -> list[Topic]:
