@@ -5,7 +5,7 @@
 ::: gcn_parser.parse.parse
 ::: gcn_parser.supported_topics
 
-## Classes
+## Types
 
 ::: gcn_parser.Topic
 ::: gcn_parser.Notice
