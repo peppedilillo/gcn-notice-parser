@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gcn-notice-parser"
-version = "0.1.0"
+version = "0.1.1"
 description = "Parsers for the NASA GCN notices."
 keywords = ["astrophysics", "astronomy", "ssdc"]
 readme = "README.md"
