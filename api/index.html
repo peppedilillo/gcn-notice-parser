@@ -460,6 +460,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#gcn_parser.Notice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notice
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -741,6 +752,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#gcn_parser.Notice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notice
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -886,7 +908,11 @@ methods. <code>topic()</code> must return the GCN topic string, and
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="gcn_parser.parse.Notice">Notice</span></code>
+                  <code><a class="autorefs autorefs-internal" title="Notice = FermiGBMAlert | FermiGBMFinPos | FermiGBMFltPos | FermiGBMGndPos | FermiLATOffline | FermiLATPosDiag | FermiLATPosIni | FermiLATPosUpd | SvomRetraction | SvomMxt | SvomEclairs | SvomGrm | EinsteinProbeWXT
+
+  
+      module-attribute
+   (gcn_parser.parse.Notice)" href="#gcn_parser.Notice">Notice</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1092,21 +1118,21 @@ directly to Kafka consumers that accept string-like topic values.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>gcn_parser/__init__.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-13">13</a></span>
-<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-14">14</a></span>
 <span class="normal"><a href="#__codelineno-0-15">15</a></span>
 <span class="normal"><a href="#__codelineno-0-16">16</a></span>
 <span class="normal"><a href="#__codelineno-0-17">17</a></span>
 <span class="normal"><a href="#__codelineno-0-18">18</a></span>
 <span class="normal"><a href="#__codelineno-0-19">19</a></span>
-<span class="normal"><a href="#__codelineno-0-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">def</span><span class="w"> </span><span class="nf">supported_topics</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Topic</span><span class="p">]:</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of GCN Kafka supported topics.</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="sd">    Returns:</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="sd">        List of supported topic enum members. The returned list can be passed</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">            directly to Kafka consumers that accept string-like topic values.</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">Topic</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">def</span><span class="w"> </span><span class="nf">supported_topics</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Topic</span><span class="p">]:</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a list of GCN Kafka supported topics.</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="sd">    Returns:</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">        List of supported topic enum members. The returned list can be passed</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">            directly to Kafka consumers that accept string-like topic values.</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">Topic</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1194,6 +1220,26 @@ directly to Kafka consumers that accept string-like topic values.</p>
 
 
   </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="gcn_parser.Notice" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">Notice</span> <span class="o">=</span> <span class="n">FermiGBMAlert</span> <span class="o">|</span> <span class="n">FermiGBMFinPos</span> <span class="o">|</span> <span class="n">FermiGBMFltPos</span> <span class="o">|</span> <span class="n">FermiGBMGndPos</span> <span class="o">|</span> <span class="n">FermiLATOffline</span> <span class="o">|</span> <span class="n">FermiLATPosDiag</span> <span class="o">|</span> <span class="n">FermiLATPosIni</span> <span class="o">|</span> <span class="n">FermiLATPosUpd</span> <span class="o">|</span> <span class="n">SvomRetraction</span> <span class="o">|</span> <span class="n">SvomMxt</span> <span class="o">|</span> <span class="n">SvomEclairs</span> <span class="o">|</span> <span class="n">SvomGrm</span> <span class="o">|</span> <span class="n">EinsteinProbeWXT</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#gcn_parser.Notice" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents first">
 
     </div>
 
