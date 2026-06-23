@@ -6,6 +6,7 @@ import pytest
 
 from gcn_parser.fermi.fermi_gbm_flt_pos import FermiGBMFltPos
 from gcn_parser.fermi.fermi_gbm_flt_pos import parse_fermi_gbm_flt_pos
+from tests._datetime import assert_datetime_fields_timezone_aware
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")
@@ -176,6 +177,12 @@ def test_parse_fermi_gbm_flt_pos_completes():
     """Tests parser runs without error over all fixtures."""
     for p in filter(lambda s: s.suffix == ".xml", (FIXTURES / "fermi_gbm_flt_pos").iterdir()):
         parse_fermi_gbm_flt_pos(p.read_bytes())
+
+
+def test_parse_fermi_gbm_flt_pos_datetimes_are_timezone_aware():
+    for p in filter(lambda s: s.suffix == ".xml", (FIXTURES / "fermi_gbm_flt_pos").iterdir()):
+        result = parse_fermi_gbm_flt_pos(p.read_bytes())
+        assert_datetime_fields_timezone_aware(result)
 
 
 _KEEP = frozenset({"Who", "What", "WhereWhen", "How", "Why", "Citations"})

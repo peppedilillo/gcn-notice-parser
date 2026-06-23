@@ -6,6 +6,7 @@ import pytest
 
 from gcn_parser.ep import EinsteinProbeWXT
 from gcn_parser.ep import parse_einstein_probe_wxt
+from tests._datetime import assert_datetime_fields_timezone_aware
 
 FIXTURES = Path("tests/fixtures/ep/alert")
 
@@ -65,3 +66,9 @@ def test_parse_einstein_probe_wxt_completes():
         result = parse_einstein_probe_wxt(path.read_bytes())
         assert isinstance(result, EinsteinProbeWXT)
         assert result.instrument == "WXT"
+
+
+def test_parse_einstein_probe_wxt_datetimes_are_timezone_aware():
+    for path in sorted(FIXTURES.glob("*.json")):
+        result = parse_einstein_probe_wxt(path.read_bytes())
+        assert_datetime_fields_timezone_aware(result)

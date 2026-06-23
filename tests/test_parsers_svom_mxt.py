@@ -8,6 +8,7 @@ import pytest
 from gcn_parser.svom import parse_svom_mxt
 from gcn_parser.svom import SvomMxt
 from gcn_parser.svom import SvomPacket
+from tests._datetime import assert_datetime_fields_timezone_aware
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/mxt")
@@ -112,6 +113,12 @@ def test_parse_svom_mxt(filename, expected):
 def test_parse_svom_mxt_completes():
     for path in filter(lambda p: p.suffix == ".xml", FIXTURES.iterdir()):
         parse_svom_mxt(path.read_bytes())
+
+
+def test_parse_svom_mxt_datetimes_are_timezone_aware():
+    for path in filter(lambda p: p.suffix == ".xml", FIXTURES.iterdir()):
+        result = parse_svom_mxt(path.read_bytes())
+        assert_datetime_fields_timezone_aware(result)
 
 
 _KEEP = frozenset({"Who", "What", "WhereWhen", "How", "Citations"})

@@ -9,6 +9,7 @@ from gcn_parser.exceptions import ParseError
 from gcn_parser.svom import parse_svom_eclairs
 from gcn_parser.svom import SvomEclairs
 from gcn_parser.svom import SvomPacket
+from tests._datetime import assert_datetime_fields_timezone_aware
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/eclairs")
@@ -218,6 +219,14 @@ def test_parse_svom_eclairs_completes():
         if path.name == "eclairs_304.xml":
             continue
         parse_svom_eclairs(path.read_bytes())
+
+
+def test_parse_svom_eclairs_datetimes_are_timezone_aware():
+    for path in filter(lambda p: p.suffix == ".xml", FIXTURES.iterdir()):
+        if path.name == "eclairs_304.xml":
+            continue
+        result = parse_svom_eclairs(path.read_bytes())
+        assert_datetime_fields_timezone_aware(result)
 
 
 def test_parse_svom_eclairs_rejects_retraction():

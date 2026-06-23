@@ -6,6 +6,7 @@ import pytest
 
 from gcn_parser.fermi.fermi_lat_pos_upd import FermiLATPosUpd
 from gcn_parser.fermi.fermi_lat_pos_upd import parse_fermi_lat_pos_upd
+from tests._datetime import assert_datetime_fields_timezone_aware
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")
@@ -120,6 +121,12 @@ def test_parse_fermi_lat_pos_upd_completes():
     """Tests parser runs without error over all fixtures."""
     for p in filter(lambda s: s.suffix == ".xml", (FIXTURES / "fermi_lat_pos_upd").iterdir()):
         parse_fermi_lat_pos_upd(p.read_bytes())
+
+
+def test_parse_fermi_lat_pos_upd_datetimes_are_timezone_aware():
+    for p in filter(lambda s: s.suffix == ".xml", (FIXTURES / "fermi_lat_pos_upd").iterdir()):
+        result = parse_fermi_lat_pos_upd(p.read_bytes())
+        assert_datetime_fields_timezone_aware(result)
 
 
 def test_all_lat_pos_upd_fixtures_have_standard_sections():

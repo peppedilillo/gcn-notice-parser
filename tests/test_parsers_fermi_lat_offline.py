@@ -6,6 +6,7 @@ import pytest
 
 from gcn_parser.fermi.fermi_lat_offline import FermiLATOffline
 from gcn_parser.fermi.fermi_lat_offline import parse_fermi_lat_offline
+from tests._datetime import assert_datetime_fields_timezone_aware
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/fermi")
@@ -70,6 +71,12 @@ def test_parse_fermi_lat_offline_completes():
     """Tests parser runs without error over all fixtures."""
     for p in filter(lambda s: s.suffix == ".xml", (FIXTURES / "fermi_lat_offline").iterdir()):
         parse_fermi_lat_offline(p.read_bytes())
+
+
+def test_parse_fermi_lat_offline_datetimes_are_timezone_aware():
+    for p in filter(lambda s: s.suffix == ".xml", (FIXTURES / "fermi_lat_offline").iterdir()):
+        result = parse_fermi_lat_offline(p.read_bytes())
+        assert_datetime_fields_timezone_aware(result)
 
 
 def test_all_lat_offline_fixtures_have_standard_sections():

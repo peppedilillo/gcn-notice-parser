@@ -7,6 +7,7 @@ import pytest
 
 from gcn_parser.svom import parse_svom_grm_trigger
 from gcn_parser.svom import SvomGrm
+from tests._datetime import assert_datetime_fields_timezone_aware
 from tests._datetime import utcify_datetimes
 
 FIXTURES = Path("tests/fixtures/svom/grm")
@@ -195,6 +196,15 @@ def test_parse_svom_grm_completes():
         if packet_type == 201:
             result = parse_svom_grm_trigger(path.read_bytes())
             assert isinstance(result, SvomGrm)
+
+
+def test_parse_svom_grm_datetimes_are_timezone_aware():
+    for path in sorted(FIXTURES.glob("*.xml")):
+        root = ElementTree.fromstring(path.read_bytes())
+        packet_type = int(root.find(".//What/Param[@name='Packet_Type']").get("value"))
+        if packet_type == 201:
+            result = parse_svom_grm_trigger(path.read_bytes())
+            assert_datetime_fields_timezone_aware(result)
 
 
 _KEEP = frozenset({"Who", "What", "WhereWhen", "How"})
